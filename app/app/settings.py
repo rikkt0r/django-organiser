@@ -29,7 +29,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'organiser',
-    'about'
+    'about',
+    'users'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -61,6 +62,13 @@ TEMPLATES = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'users.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend'
+)
+
+AUTH_PROFILE_MODULE = 'users.UserProfile'
+
 WSGI_APPLICATION = 'app.wsgi.application'
 
 
@@ -80,13 +88,9 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Europe/Warsaw'
-# TIME_ZONE = 'UTC'
-
+TIME_ZONE = 'Europe/Warsaw'  # 'UTC'
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -95,6 +99,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

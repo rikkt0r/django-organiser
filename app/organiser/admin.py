@@ -1,21 +1,20 @@
 from django.contrib import admin
 
-from .models import User
 from .models import Task
 from .models import TaskFile
+from .models import TaskLog
 
-class UserAdmin(admin.ModelAdmin):
-
-    readonly_fields = ('date_created',)
-
-    list_display = ('user_id', 'email', 'date_created')
-
-    fieldsets = [
-        ('General',     {'fields': ['name', 'email']}),
-        ('Password',    {'fields': ['password']}),
-        ('Dates',       {'fields': ['date_created', 'date_logged']})
-    ]
-
+# class UserAdmin(admin.ModelAdmin):
+#
+#     readonly_fields = ('date_created',)
+#
+#     list_display = ('user_id', 'email', 'date_created')
+#
+#     fieldsets = [
+#         ('General',     {'fields': ['name', 'email']}),
+#         ('Password',    {'fields': ['password']}),
+#         ('Dates',       {'fields': ['date_created', 'date_logged']})
+#     ]
 
 # class Task(models.Model):
 #     task_id = models.AutoField(primary_key=True)
@@ -43,6 +42,6 @@ class UserAdmin(admin.ModelAdmin):
 #     name = models.CharField(max_length=60, null=True)
 
 
-admin.site.register(User, UserAdmin)
 admin.site.register(Task)
 admin.site.register(TaskFile)
+admin.site.register(TaskLog)
