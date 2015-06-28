@@ -62,12 +62,27 @@ TEMPLATES = [
     },
 ]
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        # BACKEND': 'django.core.cache.backends.dummy.DummyCache', (without location)
+        'LOCATION': '/home/rikkt0r/PycharmProjects/my-organiser/cache',
+        'KEY_PREFIX': 'myorganiser_',
+        'TIMEOUT': 3600
+    }
+}
+
 AUTHENTICATION_BACKENDS = (
     'users.backends.EmailBackend',
     'django.contrib.auth.backends.ModelBackend'
 )
 
 AUTH_PROFILE_MODULE = 'users.UserProfile'
+
+LOGIN_REDIRECT_URL = '/users/'
+LOGIN_URL = '/users/login/'
+LOGOUT_URL = '/users/logout/'
+
 
 WSGI_APPLICATION = 'app.wsgi.application'
 

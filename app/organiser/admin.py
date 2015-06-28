@@ -4,44 +4,48 @@ from .models import Task
 from .models import TaskFile
 from .models import TaskLog
 
-# class UserAdmin(admin.ModelAdmin):
-#
-#     readonly_fields = ('date_created',)
-#
-#     list_display = ('user_id', 'email', 'date_created')
-#
-#     fieldsets = [
-#         ('General',     {'fields': ['name', 'email']}),
-#         ('Password',    {'fields': ['password']}),
-#         ('Dates',       {'fields': ['date_created', 'date_logged']})
-#     ]
 
-# class Task(models.Model):
-#     task_id = models.AutoField(primary_key=True)
-#     user_id = models.ForeignKey(User)
-#     name = models.CharField(max_length=80)
-#     description = models.TextField(max_length=1000)
-#     date_created = models.DateTimeField(auto_now_add=True)
-#     date_from = models.DateTimeField()
-#     date_to = models.DateTimeField()
-#     amortisation = models.PositiveSmallIntegerField()
-#     postpone_count = models.PositiveSmallIntegerField()
-#     repeat = models.PositiveSmallIntegerField()
-#     lat = models.DecimalField(max_digits=8, decimal_places=6)
-#     lng = models.DecimalField(max_digits=8, decimal_places=6)
-#     public = models.BooleanField(default=False)
-#     status = models.PositiveSmallIntegerField(default=1)
-#
-#
-# class TaskFile(models.Model):
-#     task_file_id = models.AutoField(primary_key=True)
-#     task_id = models.ForeignKey(Task)
-#     file = models.FileField()
-#     type = models.CharField(max_length=15)
-#     size = models.IntegerField()
-#     name = models.CharField(max_length=60, null=True)
+class TaskAdmin(admin.ModelAdmin):
+
+    readonly_fields = ('date_created', 'date_modified')
+
+    list_display = ('task_id', 'user_id', 'date_created', 'public', 'status')
+
+    fieldsets = [
+        ('General',     {'fields': ['name', 'description']}),
+        ('Location',    {'fields': ['lat', 'lng', 'place_desc']}),
+        ('Dates',       {'fields': ['date_created', 'date_modified', 'date_from', 'date_to']}),
+        ('Repeat',      {'fields': ['repeat', 'repeat_days']}),
+        ('Status',      {'fields': ['public', 'status']})
+    ]
 
 
-admin.site.register(Task)
-admin.site.register(TaskFile)
-admin.site.register(TaskLog)
+class TaskFileAdmin(admin.ModelAdmin):
+
+    readonly_fields = ('task_file_id', 'task_id', 'date_created')
+
+    list_display = ('task_file_id', 'task_id', 'type', 'size', 'date_created', 'status')
+
+    fieldsets = [
+        ('General',         {'fields': ['task_file_id', 'task_id']}),
+        ('Descriptions',    {'fields': ['type', 'size', 'name']}),
+        ('Dates, status',   {'fields': ['status', 'date_created']}),
+        ('File',            {'fields': ['file']})
+    ]
+
+
+class TaskLogAdmin(admin.ModelAdmin):
+
+    readonly_fields = ('task_log_id', 'task_id', 'date_created')
+
+    list_display = ('task_log_id', 'task_id', 'date_created', 'status')
+
+    fieldsets = [
+        ('General',         {'fields': ['task_log_id', 'task_id']}),
+        ('Dates created',   {'fields': ['date_created']}),
+        ('Description',     {'fields': ['description']}),
+    ]
+
+admin.site.register(Task, TaskAdmin)
+admin.site.register(TaskFile, TaskFileAdmin)
+admin.site.register(TaskLog, TaskLogAdmin)

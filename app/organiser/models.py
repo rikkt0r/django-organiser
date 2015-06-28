@@ -36,6 +36,8 @@ class TaskFile(models.Model):
     type = models.CharField(max_length=15)
     size = models.IntegerField()
     name = models.CharField(max_length=60, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(default=True, blank=True)
 
 
 class TaskLog(models.Model):
@@ -44,3 +46,4 @@ class TaskLog(models.Model):
     task_id = models.ForeignKey(Task)
     description = models.TextField(max_length=1000)
     date_created = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(default=True, blank=True)
