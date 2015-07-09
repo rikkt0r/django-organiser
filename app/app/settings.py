@@ -28,6 +28,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms'
     'organiser',
     'about',
     'users'
@@ -83,6 +84,8 @@ LOGIN_REDIRECT_URL = '/users/'
 LOGIN_URL = '/users/login/'
 LOGOUT_URL = '/users/logout/'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
@@ -125,5 +128,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_USE_TLS = True
 # EMAIL_USE_SSL = False
 
-MEDIA_ROOT = ''
-MEDIA_URL = ''
+MEDIA_ROOT = '/home/rikkt0r/PycharmProjects/my-organiser/media'
+MEDIA_URL = '/task/file/'
