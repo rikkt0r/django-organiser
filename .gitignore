@@ -1,6 +1,10 @@
 # Created by https://www.gitignore.io
 
 ### Python ###
+
+# remove temporary cache (django backend)
+cache/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

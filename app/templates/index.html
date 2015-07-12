@@ -2,10 +2,14 @@
 
 {% block content %}
 
-      <div class="jumbotron">
+    <div class="jumbotron">
         <h1>Marketing stuff!</h1>
-        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.</p>
-        <p><a class="btn btn-lg btn-success" href="#" role="button">Get started today</a></p>
+        {% if user.is_authenticated %}
+            <p class="lead">Logged in as: {{user.username}} You are not logged</p>
+            <p><a class="btn btn-lg btn-success" href="/users/logout/" role="button">Logout</a></p>
+        {% else %}
+            <p class="lead">You are not logged</p>
+        {% endif %}
       </div>
 
       <div class="row">

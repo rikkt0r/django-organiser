@@ -28,8 +28,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms'
     'organiser',
-    'about'
+    'about',
+    'users'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -61,6 +63,30 @@ TEMPLATES = [
     },
 ]
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        # BACKEND': 'django.core.cache.backends.dummy.DummyCache', (without location)
+        'LOCATION': '/home/rikkt0r/PycharmProjects/my-organiser/cache',
+        'KEY_PREFIX': 'myorganiser_',
+        'TIMEOUT': 3600
+    }
+}
+
+AUTHENTICATION_BACKENDS = (
+    'users.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend'
+)
+
+AUTH_PROFILE_MODULE = 'users.UserProfile'
+
+LOGIN_REDIRECT_URL = '/users/'
+LOGIN_URL = '/users/login/'
+LOGOUT_URL = '/users/logout/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+
 WSGI_APPLICATION = 'app.wsgi.application'
 
 
@@ -80,13 +106,9 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Europe/Warsaw'
-# TIME_ZONE = 'UTC'
-
+TIME_ZONE = 'Europe/Warsaw'  # 'UTC'
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -95,6 +117,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -105,5 +128,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_USE_TLS = True
 # EMAIL_USE_SSL = False
 
-MEDIA_ROOT = ''
-MEDIA_URL = ''
+MEDIA_ROOT = '/home/rikkt0r/PycharmProjects/my-organiser/media'
+MEDIA_URL = '/task/file/'

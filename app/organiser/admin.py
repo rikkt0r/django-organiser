@@ -1,59 +1,51 @@
 from django.contrib import admin
 
-from .models import User
 from .models import Task
 from .models import TaskFile
-
-class UserAdmin(admin.ModelAdmin):
-
-    readonly_fields = ('date_created',)
-
-    list_display = ('user_id', 'email', 'date_created')
-
-    fieldsets = [
-        ('General',     {'fields': ['name', 'email']}),
-        ('Password',    {'fields': ['password']}),
-        ('Dates',       {'fields': ['date_created', 'date_logged']})
-    ]
+from .models import TaskLog
 
 
 class TaskAdmin(admin.ModelAdmin):
 
-    readonly_fields = ('date_created',)
+    readonly_fields = ('date_created', 'date_modified')
 
-    list_display = ('task_id', 'user_id', 'name', 'date_created')
+    list_display = ('task_id', 'user_id', 'date_created', 'public', 'status')
 
     fieldsets = [
-        ('General',         {'fields': ['name', 'description']}),
-        ('Dates',           {'fields': ['date_created', 'date_from', 'date_to']}),
-        ('Date details',    {'fields': ['amortisation', 'postpone_count']}),
-        ('Coordinates',     {'fields': ['lat', 'lng']}),
-        ('Status',     {'fields': ['public', 'status']})
+        ('General',     {'fields': ['name', 'description']}),
+        ('Location',    {'fields': ['lat', 'lng', 'place_desc']}),
+        ('Dates',       {'fields': ['date_created', 'date_modified', 'date_from', 'date_to']}),
+        ('Repeat',      {'fields': ['repeat', 'repeat_days']}),
+        ('Status',      {'fields': ['public', 'status']})
     ]
 
 
 class TaskFileAdmin(admin.ModelAdmin):
 
-    readonly_fields = ('date_created',)
+    readonly_fields = ('task_file_id', 'task_id', 'date_created')
 
-    list_display = ('task_file_id', 'task_id', 'type', 'date_created')
+    list_display = ('task_file_id', 'task_id', 'type', 'size', 'date_created', 'status')
 
     fieldsets = [
-        ('General',         {'fields': ['name', 'description']}),
-        ('Dates',           {'fields': ['date_created', 'date_from', 'date_to']}),
-        ('Date details',    {'fields': ['amortisation', 'postpone_count']}),
-        ('Coordinates',     {'fields': ['lat', 'lng']}),
-        ('Status',     {'fields': ['status']})
+        ('General',         {'fields': ['task_file_id', 'task_id']}),
+        ('Descriptions',    {'fields': ['type', 'size', 'name']}),
+        ('Dates, status',   {'fields': ['status', 'date_created']}),
+        ('File',            {'fields': ['file']})
     ]
-# class TaskFile(models.Model):
-#     task_file_id = models.AutoField(primary_key=True)
-#     task_id = models.ForeignKey(Task)
-#     file = models.FileField()
-#     type = models.CharField(max_length=15)
-#     size = models.IntegerField()
-#     name = models.CharField(max_length=60, null=True)
 
 
-admin.site.register(User, UserAdmin)
+class TaskLogAdmin(admin.ModelAdmin):
+
+    readonly_fields = ('task_log_id', 'task_id', 'date_created')
+
+    list_display = ('task_log_id', 'task_id', 'date_created', 'status')
+
+    fieldsets = [
+        ('General',         {'fields': ['task_log_id', 'task_id']}),
+        ('Dates created',   {'fields': ['date_created']}),
+        ('Description',     {'fields': ['description']}),
+    ]
+
 admin.site.register(Task, TaskAdmin)
-admin.site.register(TaskFile)
+admin.site.register(TaskFile, TaskFileAdmin)
+admin.site.register(TaskLog, TaskLogAdmin)
