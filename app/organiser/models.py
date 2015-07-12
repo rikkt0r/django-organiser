@@ -25,7 +25,13 @@ class Task(models.Model):
     lat = models.DecimalField(max_digits=8, decimal_places=6)
     lng = models.DecimalField(max_digits=8, decimal_places=6)
     public = models.BooleanField(default=False)
-    status = models.PositiveSmallIntegerField(default=1)
+    status = models.PositiveSmallIntegerField(default=1, choices=(
+        (0, "Removed"),
+        (1, "Inactive"),
+        (2, "Active"),
+        (3, "Done"),
+        (4, "Repeated")
+    ))
 
 
 class TaskFile(models.Model):
