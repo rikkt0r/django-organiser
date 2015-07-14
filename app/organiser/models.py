@@ -20,8 +20,6 @@ class Task(models.Model):
     date_modified = models.DateTimeField(auto_now=True, blank=True)
     date_from = models.DateTimeField()
     date_to = models.DateTimeField()
-    amortisation = models.PositiveSmallIntegerField()
-    postpone_count = models.PositiveSmallIntegerField()
     repeat = models.PositiveSmallIntegerField()
     lat = models.DecimalField(max_digits=8, decimal_places=6)
     lng = models.DecimalField(max_digits=8, decimal_places=6)
