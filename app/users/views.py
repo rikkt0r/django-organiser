@@ -9,6 +9,7 @@ def users_index(request):
 
     return render(request, "users/panel.html")
 
+
 def users_login(request):
 
     if request.method == 'GET':
@@ -18,12 +19,13 @@ def users_login(request):
 
     else:
         form = LoginForm(request.POST)
-        username = form.cleaned_data['username']
-        password = form.cleaned_data['password']
-
-        user = authenticate(username=username, password=password)
 
         if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+            user = authenticate(username=username, password=password)
+
             if user.is_active:
                 login(request, user)
                 return redirect('/')
@@ -40,6 +42,7 @@ def users_login(request):
 def users_logout(request):
     logout(request)
     return redirect('/')
+
 
 def users_passwd(request):
     return render(request, "users/passwd.html")

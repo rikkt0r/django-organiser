@@ -1,0 +1,55 @@
+{% extends "base_template.html" %}
+
+{% block menu_tasks %} active {% endblock %}
+
+{% block content %}
+
+    <div class="jumbotron">
+        <h2>Task list</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 center-block">
+
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>When</th>
+                  <th>What</th>
+                  <th>Files</th>
+                  <th>Priority</th>
+                  <th>Public</th>
+                </tr>
+              </thead>
+              <tbody>
+              {# <th scope="row">1</th>#}
+              {% for task in tasks %}
+                <tr>
+                  <td>{{ task.date_to|date:"Y-m-d h:m A" }}</td>
+                  <td><a href="/tasks/{{task.task_id}}">{{ task.name }}</a></td>
+                  <td>-</td>
+                  <td>
+                      {% if task.priority == 1 %}
+                        <span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span></td>
+                      {% elif task.priority == 2 %}
+                        <span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
+                      {% elif task.priority == 3 %}
+                        <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
+                      {% else %}
+                        <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
+                      {% endif %}
+
+                  <td>
+                      {% if task.public %}
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
+                      {% else %}
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
+                      {% endif %}
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

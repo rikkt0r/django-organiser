@@ -20,6 +20,7 @@ class RegularUser(User):
         verbose_name = 'Regular user account'
         verbose_name_plural = 'Regular user accounts'
 
+
 class Staff(User):
     class Meta:
         proxy = True

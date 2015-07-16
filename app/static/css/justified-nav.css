@@ -87,3 +87,11 @@ body {
     padding-left: 0;
   }
 }
+
+/* overwritting boostrap */
+.center-block {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+  float: none !important;
+}

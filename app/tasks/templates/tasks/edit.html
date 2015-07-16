@@ -1,0 +1,69 @@
+{% extends "base_template.html" %}
+
+{% block menu_tasks %} active {% endblock %}
+
+{% block content %}
+
+    <div class="jumbotron">
+        <h1>Editing your task,</h1>
+        <p class="lead">bitch</p>
+    </div>
+
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-10 col-md-8 center-block">
+
+            <form method="POST" role="form" class="form-horizontal">
+                <div class="form-group">
+                    <label for="task_name">Task name</label>
+                    <input type="text" class="form-control" id="task_name" name="task_name" placeholder="Email">
+                </div>
+
+                <div class="form-group row">
+                    <label for="task_from" class="col-xs-2 control-label">From</label>
+                    <div class="col-xs-4">
+                        <input type="text" class="form-control" id="task_from" name="task_from" placeholder="Choose date">
+                    </div>
+                    <label for="task_to" class="col-xs-2 control-label">To</label>
+                    <div class="col-xs-4">
+                        <input type="text" class="form-control" id="task_to" name="task_to" placeholder="Choose date">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="task_description">Description</label>
+                    <textarea id="task_description" name="task_description"></textarea>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/js/tinymce/tinymce.min.js"></script>
+    <script src="/static/js/jquery.datetimepicker.js"></script>
+    <script>
+        tinymce.init({
+            selector: "#task_description"
+        });
+        $('#task_from').datetimepicker({
+            dayOfWeekStart : 1,
+            lang:'en',
+            disabledDates:['2015/01/08','2015/01/09','12015/01/10'],
+            startDate:	'2015/01/05'
+        });
+        $('#task_to').datetimepicker({
+            dayOfWeekStart : 1,
+            lang:'en',
+            disabledDates:['2015/01/08','2015/01/09','12015/01/10'],
+            startDate:	'2015/01/05'
+        });
+    </script>
+{% endblock %}
