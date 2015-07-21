@@ -28,7 +28,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crispy_forms',
     'tasks',
     'about',
     'users'
@@ -79,13 +78,12 @@ AUTHENTICATION_BACKENDS = (
 )
 
 AUTH_PROFILE_MODULE = 'users.UserProfile'
+# 2 weeks in seconds
+SESSION_COOKIE_AGE = 1209600
 
 LOGIN_REDIRECT_URL = '/users/'
 LOGIN_URL = '/users/login/'
 LOGOUT_URL = '/users/logout/'
-
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
-
 
 WSGI_APPLICATION = 'app.wsgi.application'
 

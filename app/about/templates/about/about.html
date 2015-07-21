@@ -4,17 +4,25 @@
 
 {% block content %}
 
-    <div class="jumbotron">
-        <h2>About us..</h2>
-    </div>
+    <div class="grid">
+        <div class="row cells2 padding10">
 
-    <div class="row">
+            <div class="cell">
+                <h3>About us</h3>
+                <p class="text-accent align-justify">
+                    Drogi Marszałku, Wysoka Izbo. PKB rośnie. Z drugiej strony, usprawnienie systemu finansowego pociąga za sobą proces wdrożenia i unowocześniania dalszych kierunków rozwoju. Reasumując. zawiązanie koalicji koliduje z dotychczasowymi zasadami kierunków rozwoju. Natomiast rozszerzenie naszej kompetencji w większym stopniu tworzenie obecnej sytuacji. Nikt inny was nie zaś teorię, okazuje się iż zmiana przestarzałego systemu powszechnego uczestnictwa. Jak już mówiłem jasne jest ważne z dotychczasowymi zasadami systemu powszechnego uczestnictwa. Reasumując. wdrożenie nowych, lepszych rozwiązań zmusza nas do celu.
+                </p>
+            </div>
 
-        <form class="form-horizontal">
-            <textarea class="form-control" rows="3" placeholder="Write to us!"></textarea>
-            <button type="submit" class="btn btn-default">Send</button>
-        </form>
-
+            <div class="cell" style="padding-top: 50px;">
+                <form class="form-horizontal">
+                    <div class="input-control textarea full-size">
+                        <textarea name="writetous" placeholder="Write to us!"></textarea>
+                    </div>
+                    <input type="button" value="Submit" class="place-right">
+                </form>
+            </div>
+        </div>
     </div>
 
 {% endblock %}

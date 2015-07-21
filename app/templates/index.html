@@ -1,35 +1,74 @@
 {% extends "base_template.html" %}
 
-{% block menu_home %} active {% endblock %}
-
 {% block content %}
 
-    <div class="jumbotron">
-        <h1>My little organiser,</h1>
-        <p class="lead">plan it, do it, drink on it.</p>
-    </div>
+<div class="page-content">
+    <div class="bg-lightBlue fg-white align-center">
+        <div class="container">
+            <div style="padding-top: 40px" class="no-overflow">
 
-    <div class="row text-center">
-        <div class="col-xs-10 col-sm-6 center-block">
-
-            <h3 class="text-center text-uppercase">
-                <span class="label label-primary">WTF anyway?</span>
-            </h3>
-            <ul style="list-style-type: none;">
-                <li>No bullshit</li>
-                <li>YOUR organiser. No social shit</li>
-                <li>Map view !</li>
-                <li>your unique link</li>
-            </ul>
+                <br>
+                <h1 class="text-shadow metro-title" style="font-size: 4.5rem; line-height: 1">My Little Organiser</h1>
+                <div class="padding20 sub-leader text-light">
+                    Plan it, achieve it, drink on it!
+                </div>
+                <img style="margin-top:50px;margin-bottom: 50px; width:80%" src="/static/images/how.png" />
+                <!--<div>-->
+                    <!--<iframe width="80%" height="300px" src="https://www.youtube.com/embed/xM5IDhkAuts" frameborder="0" allowfullscreen></iframe>-->
+                <!--</div>-->
+            </div>
         </div>
     </div>
 
-    <h3 class="text-center">How it works</h3>
+    <div class="fg-dark">
+        <div class="container">
+            <div style="padding-top: 40px;padding-bottom: 40px;" class="padding80">
+                <div class="grid">
+                    <div class="row cells3">
+                        <div class="cell no-phone">
+                            <div class="image-container bordered">
+                                <div class="frame">
+                                    <img src="/static/images/checkem.gif">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="padding-left: 20px" class="cell colspan2">
+                            <h1 class="">WTF anyway?</h1>
+                            <ol class="numeric-list square-marker">
+                                <li>YOUR organiser. No social shit</li>
+                                <li>Your unique link for public profile</li>
+                                <li>Recieve updates on subscribed tasks</li>
+                                <li>Share task by email</li>
+                                <li>No bullshit</li>
+                                <li>Map view !</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="row">
-        <div class="col-xs-8 col-sm-6 center-block">
-            <iframe width="700" height="400" src="https://www.youtube.com/embed/xM5IDhkAuts" frameborder="0" allowfullscreen></iframe>
+
+                <!--<br>-->
+                <!--<hr class="thin">-->
+
+                <!--<div>-->
+                    <!--<h1 class="margin40">Simple steps to greater success</h1>-->
+                    <!--<ul class="step-list">-->
+                        <!--<li>-->
+                            <!--<h4>You are a miserable faggot</h4>-->
+                            <!--<span class="enumeration">And you want to improve your productivity</span><br/>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                            <!--<h4>Yet you found this website</h4>-->
+                            <!--<span class="enumeration">Great!</span>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            </div>
         </div>
     </div>
+</div>
+
+
 
 {% endblock %}

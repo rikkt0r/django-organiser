@@ -13,8 +13,10 @@
     <title>My Little Organiser</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/css/justified-nav.css" rel="stylesheet">
+    <link href="/static/css/metro.min.css" rel="stylesheet">
+    <link href="/static/css/metro-icons.min.css" rel="stylesheet">
+    <link href="/static/css/domain.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 
     <link href="/static/css/jquery.datetimepicker.css" rel="stylesheet">
 
@@ -25,48 +27,84 @@
     <![endif]-->
   </head>
 
-  <body>
+<body>
 
-    <div class="container">
+    <div><header data-role="appbar" class="app-bar fixed-top">
+        <div class="container">
+            <a class="app-bar-element branding" href="/">
+                <!--<img style="height: 28px;  margin-right: 10px;" src="/static/images/wn8.png"> My Organiser-->
+                <span class="mif-bookmarks" style="color: orange; display: inline-block; margin-right: 10px;"></span>My Organiser
+            </a>
 
-       <div class="masthead">
-        <h3 class="text-muted">My little organiser</h3>
-        <nav>
-          <ul class="nav nav-justified">
-            <li class="{% block menu_home %}{% endblock %}"><a href="/">Home</a></li>
-            <li class="{% block menu_about %}{% endblock %}"><a href="/about">About us</a></li>
-            <li class="{% block menu_support %}{% endblock %}"><a href="/about/support">Support us!</a></li>
+            <ul class="app-bar-menu">
+                <li data-flexorderorigin="0" data-flexorder="1">
+                    <a class="{% block menu_about %}{% endblock %}" href="/about/">About</a>
+                </li>
 
-            {% if user.is_authenticated %}
-              <li>
-                <a class="dropdown-toggle {% block menu_tasks %}{% endblock %}" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                  {{ user.username }} <span class="caret"></span>
-                </a>
+                <li data-flexorderorigin="1" data-flexorder="2">
+                    <a class="{% block menu_support %}{% endblock %}" href="/about/support/">Support us!</a>
+                </li>
 
-                <ul class="dropdown-menu">
-                  <li><a href="/tasks">Your tasks</a></li>
-                  <li><a href="/tasks/map">Tasks on map</a></li>
-                  <li><a href="/tasks/new">&raquo; New task</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li><a href="/users/logout/">Log out</a></li>
-                </ul>
-              </li>
+                {% if user.is_authenticated %}
+                    <li data-flexorderorigin="2" data-flexorder="3">
+                        <a class="dropdown-toggle" href="#" class="{% block menu_tasks %}{% endblock %}">{{ user.username }}</a>
+                        <ul data-no-close="true" data-role="dropdown" class="d-menu">
+                          <li><a href="/tasks"><span class="chevron-thin-right"></span>Your tasks</a></li>
+                          <li><a href="/tasks/map"><span class="chevron-thin-right"></span>Tasks on map</a></li>
+                          <li><a href="/tasks/new">&raquo; New task</a></li>
+                          <li class="divider"></li>
+                          <li><a href="/users/settings/"><span class="mif-cog"></span>Settings</a></li>
+                          <li class="divider"></li>
+                          <li><a href="/users/logout/"><span class="mif-eject"></span>Log out</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li data-flexorderorigin="1" data-flexorder="2">
+                        <a class="{% block menu_login %}{% endblock %}" href="/users/login/">Log in</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </header></div>
 
-            {% else %}
-              <li class="{% block menu_login %}{% endblock %}"><a href="/users/login/">Log in</a></li>
-            {% endif %}
-          </ul>
-        </nav>
-      </div>
+    <!-- Site content -->
+    <div class="template-content">
+    {% block content %}{% endblock %}
+    </div>
+    <!-- Site footer -->
 
-        {% block content %}{% endblock %}
+    <footer class="bg-darkTeal fg-white">
+        <div class="container">
 
-      <!-- Site footer -->
-      <footer class="footer">
-        <p>&copy; <b>My Little Organiser</b> by Grzegorz Wójcicki, 2015</p>
-      </footer>
+            <div class="container align-center">
+                <h3>Countdown to hell</h3>
+                <div data-days="2" data-role="countdown" class="countdown"><div class="part days fg-grayLight" data-day-text="days"><div class="digit bg-cyan fg-white">0</div><div class="digit bg-cyan fg-white">1</div></div><div class="divider fg-dark">:</div><div class="part hours fg-grayLight" data-day-text="hours"><div class="digit bg-cyan fg-white">2</div><div class="digit bg-cyan fg-white">3</div></div><div class="divider fg-dark">:</div><div class="part minutes fg-grayLight" data-day-text="mins"><div class="digit bg-cyan fg-white">5</div><div class="digit bg-cyan fg-white">6</div></div><div class="divider fg-dark">:</div><div class="part seconds fg-grayLight" data-day-text="secs"><div class="digit bg-cyan fg-white">2</div><div class="digit bg-cyan fg-white">4</div></div></div>
+            </div>
 
-    </div> <!-- /container -->
+            <div class="grid align-center">
+                <div class="row cells2">
+
+                    <div class="cell">
+                        <a href="#">Faq</a><br/>
+                        <a href="#">Rules</a><br/>
+                        <a href="#">some stuff</a><br/>
+                    </div>
+
+                    <div class="cell">
+                        <a href="https://bitbucket.com/rikkt0r">More projects</a><br />
+                        <a href="/about/techs">Technologies used</a><br />
+                        <a href="#">Its open sauce &raquo; check it</a><br />
+                    </div>
+                </div>
+            </div>
+
+            <hr class="thin">
+
+            <div class="align-center padding5 text-secondary">
+                &copy; <b>My Little Organiser</b> by Grzegorz Wójcicki, 2015
+            </div>
+        </div>
+    </footer>
 
 
     <script>
@@ -87,7 +125,8 @@
     </script>
 
     <script src="/static/js/jquery-1.11.3.min.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/metro.min.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 
     {% block scripts %}{% endblock %}
   </body>

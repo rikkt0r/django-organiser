@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^agreement/$', TemplateView.as_view(template_name='about/agreement.html'), name='agreement'),
     url(r'^faq/$', TemplateView.as_view(template_name='about/faq.html'), name='faq'),
     url(r'^support/$', TemplateView.as_view(template_name='about/support.html'), name='support'),
+    url(r'^techs/$', TemplateView.as_view(template_name='about/techs.html'), name='techs'),
 ]

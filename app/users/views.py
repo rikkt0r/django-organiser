@@ -26,16 +26,27 @@ def users_login(request):
 
             user = authenticate(username=username, password=password)
 
-            if user.is_active:
-                login(request, user)
-                return redirect('/')
+            if user:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('/')
+                else:
+                    return render(request, "users/login.html", context={
+                        'error': 'disabled account, you idjit',
+                        'login_form': LoginForm,
+                        'invalid_login': 'error'
+                    })
             else:
                 return render(request, "users/login.html", context={
-                    'error': 'disabled account, you idjit'
+                    'error': 'Incorrect password',
+                    'login_form': LoginForm,
+                    'invalid_password': 'error'
                 })
         else:
             return render(request, "users/login.html", context={
-                'error': 'type CORRECT login....'
+                'error': 'type CORRECT login...',
+                'login_form': LoginForm,
+                'invalid_login': 'error'
             })
 
 

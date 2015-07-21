@@ -73,7 +73,7 @@ def tasks_map(request):
 
 @login_required
 def tasks_new(request):
-    return render(request, "tasks/new.html")
+    return render(request, "tasks/edit.html")
 
 
 @login_required
