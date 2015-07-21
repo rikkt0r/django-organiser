@@ -1,11 +1,21 @@
-html, body {
-    height: 100%;
-    min-height: 100%;
-}
+/* -------------------- BASIC STUFF ------------------- */
 
-.template-content {
-    padding-top: 50px;
-}
+html,body { height: 100%; }
+
+body {display: table;width: 100%;}
+.page-row {display: table-row;}
+
+.page-row-expanded { height: 100%; }
+
+footer {padding-top: 10px;clear:both;}
+footer .grid .cell a {color: #CECECE;}
+footer .grid .cell a:hover {color: inherit;text-decoration: underline;}
+
+.template-content {padding-top: 50px;}
+
+.app-bar .app-bar-menu > li > a.active {background-color: #005696;}
+
+/* -------------------- LOGIN FORM ------------------- */
 
 .login-form {
     width: 25rem;
@@ -21,20 +31,7 @@ html, body {
     transform: scale(.8);
 }
 
-.app-bar .app-bar-menu > li > a.active {
-    background-color: #005696;
-}
-
 li span.enumeration {
     font-family: monospace;
     padding-left: 20px;
 }
-
-footer {
-    padding-top: 10px;
-    clear:both;
-}
-
-footer .grid .cell a {color: #CECECE;}
-
-footer .grid .cell a:hover {color: inherit;text-decoration: underline;}
