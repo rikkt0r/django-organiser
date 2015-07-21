@@ -4,7 +4,7 @@
 
 {% block content %}
 
-    <div class="padding20 block-shadow" style="opacity: 1; -webkit-transform: scale(1); transform: scale(1); -webkit-transition: 0.5s; transition: 0.5s;">
+    <div class="padding20 block-shadow align-left fg-dark bg-white" style="margin: 100px auto; width: 90%; opacity: 1; -webkit-transform: scale(1); transform: scale(1); -webkit-transition: 0.5s; transition: 0.5s;">
         <h1 class="text-light">Login to service</h1>
         <hr class="thin">
         <br>
@@ -29,11 +29,11 @@
                     <button class="button helper-button reveal" tabindex="-1" type="button"><span class="mif-looks"></span></button>
                 </div>
                 <br>
-                <br>
                 <div class="input-control" data-role="input">
-                    <label class="switch">
+                    <label class="input-control checkbox">
                         {{ login_form.remember }}
                         <span class="check"></span>
+                        <span class="caption">Remember me</span>
                     </label>
                 </div>
                 <br>

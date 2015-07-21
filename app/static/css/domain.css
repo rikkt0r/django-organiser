@@ -1,17 +1,13 @@
 /* -------------------- BASIC STUFF ------------------- */
 
 html,body { height: 100%; }
-
 body {display: table;width: 100%;}
 .page-row {display: table-row;}
-
 .page-row-expanded { height: 100%; }
 
 footer {padding-top: 10px;clear:both;}
 footer .grid .cell a {color: #CECECE;}
 footer .grid .cell a:hover {color: inherit;text-decoration: underline;}
-
-.template-content {padding-top: 50px;}
 
 .app-bar .app-bar-menu > li > a.active {background-color: #005696;}
 

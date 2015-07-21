@@ -4,8 +4,22 @@
 
 {% block content %}
 
-    <div class="jumbotron">
-        <h2>Tasks on MAP, bitch..</h2>
-    </div>
+    <h2>Your tasks on map</h2>
+
+    <div id="map" class="fg-dark" style="height: 300px;"></div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script src="/static/js/geoPosition.js"></script>
+<script src="/static/js/_map.js"></script>
+
+<script>
+
+    map.init(true);
+    map.repopulate();
+
+</script>
 
 {% endblock %}
