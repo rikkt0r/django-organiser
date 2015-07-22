@@ -90,6 +90,7 @@
             <div class="row padding10" style="width: 90%;margin: 0 auto;">
                 <span class="align-left">Map options</span>
                 <!--<button class="button" onclick="map.repopulate()"><span class="fg-blue mif-rocket mif-2x"></span> Repopulate</button>-->
+                <button class="button map-user-location" onclick="map.userLocation()"><span class="fg-blue mif-vpn-lock mif-2x"></span> Your location</button>
                 <button class="button" onclick="map.center()"><span class="fg-blue mif-earth mif-2x"></span> Wrap all</button>
                 <button class="button"><span class="fg-blue mif-alarm mif-2x"></span> Show urgent [X]</button>
                 <button class="button"><span class="fg-blue mif-layers mif-2x"></span> Color by priority [X]</button>
@@ -112,12 +113,16 @@
 <script>
 
     $(document).ready(function(){
-        map.init(false);
+        map.init(true);
         map.repopulate();
 
         $('#map-task-table td').click(function(){
             map.panToTask($(this).attr('data-taskid'));
         });
+
+        if(! map.userCheckLocation()){
+            $('button.map-user-location').attr('disabled', disabled);
+        }
     });
 
 

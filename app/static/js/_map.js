@@ -16,7 +16,7 @@ var map = (function(L, $) {
     // TEST ONLY
     var points = [
         {id: 1, lat: 50.05346, lng: 19.8535},
-        {id: 2, lat: 50.06657, lng: 19.98894},
+        {id: 2, lat: 50.03597, lng: 20.04627},
         {id: 3, lat: 50.04762, lng: 19.94637},
         {id: 4, lat: 50.04773, lng: 19.90963},
         {id: 5, lat: 50.05346, lng: 19.8535},
@@ -114,6 +114,15 @@ var map = (function(L, $) {
         }
     }
 
+    function userCheckLocation(){
+        return userLat && userLng;
+    }
+
+    function userLocation(){
+        if(userCheckLocation())
+            _map.panTo([userLat, userLng]);
+    }
+
     function repopulate(){
         if(_map){
             var group = [];
@@ -137,7 +146,9 @@ var map = (function(L, $) {
         init: init,
         repopulate: repopulate,
         center: centerMap,
-        panToTask: panToTask
+        panToTask: panToTask,
+        userLocation: userLocation,
+        userCheckLocation: userCheckLocation
     }
 
 
