@@ -31,3 +31,7 @@ li span.enumeration {
     font-family: monospace;
     padding-left: 20px;
 }
+
+table#map-task-table td {
+    cursor: pointer;
+}

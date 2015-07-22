@@ -6,7 +6,101 @@
 
     <h2>Your tasks on map</h2>
 
-    <div id="map" class="fg-dark" style="height: 300px;"></div>
+    <div class="grid">
+        <div class="row">
+            <div class="row cells2 bg-white fg-dark padding10" style="max-height: 380px; width:90%; margin: 0 auto;overflow-y: scroll;">
+
+                <table class="table striped cell-hovered" id="map-task-table">
+                    <thead>
+                    <tr>
+                        <th>Due</th>
+                        <th>Task</th>
+                        <th>Due</th>
+                        <th>Task</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td data-taskid="1"><span class="tag info">2 days</span></td>
+                        <td data-taskid="1">Lorem ipsum dolor sit amet</td>
+                        <td data-taskid="2"><span class="tag info">2 days</span></td>
+                        <td data-taskid="2">Lorem ipsum dolor sit amet</td>
+                    </tr>
+                    <tr>
+                        <td data-taskid="3"><span class="tag info">2 days</span></td>
+                        <td data-taskid="3">Lorem ipsum dolor sit amet</td>
+                        <td data-taskid="4"><span class="tag info">2 days</span></td>
+                        <td data-taskid="4">Lorem ipsum dolor sit amet</td>
+                    </tr>
+                    <tr>
+                        <td data-taskid="6"><span class="tag info">2 days</span></td>
+                        <td data-taskid="6">Lorem ipsum dolor sit amet</td>
+                        <td data-taskid="2"><span class="tag info">2 days</span></td>
+                        <td data-taskid="2">Lorem ipsum dolor sit amet</td>
+                    </tr>
+                    <tr>
+                        <td data-taskid="5"><span class="tag info">2 days</span></td>
+                        <td data-taskid="5">Lorem ipsum dolor sit amet</td>
+                        <td data-taskid="4"><span class="tag info">2 days</span></td>
+                        <td data-taskid="4">Lorem ipsum dolor sit amet</td>
+                    </tr>
+                    <tr>
+                        <td data-taskid="3"><span class="tag info">2 days</span></td>
+                        <td data-taskid="3">Lorem ipsum dolor sit amet</td>
+                        <td data-taskid="5"><span class="tag info">2 days</span></td>
+                        <td data-taskid="5">Lorem ipsum dolor sit amet</td>
+                    </tr>
+                    <tr>
+                        <td data-taskid="5"><span class="tag info">2 days</span></td>
+                        <td data-taskid="5">Lorem ipsum dolor sit amet</td>
+                        <td data-taskid="1"><span class="tag info">2 days</span></td>
+                        <td data-taskid="1">Lorem ipsum dolor sit amet</td>
+                    </tr>
+                    <tr>
+                        <td data-taskid="2"><span class="tag info">2 days</span></td>
+                        <td data-taskid="2">Lorem ipsum dolor sit amet</td>
+                        <td data-taskid="4"><span class="tag info">2 days</span></td>
+                        <td data-taskid="4">Lorem ipsum dolor sit amet</td>
+                    </tr>
+                    <tr>
+                        <td data-taskid="3"><span class="tag info">2 days</span></td>
+                        <td data-taskid="3">Lorem ipsum dolor sit amet</td>
+                        <td data-taskid="5"><span class="tag info">2 days</span></td>
+                        <td data-taskid="5">Lorem ipsum dolor sit amet</td>
+                    </tr>
+                    <tr>
+                        <td data-taskid="2"><span class="tag info">2 days</span></td>
+                        <td data-taskid="2">Lorem ipsum dolor sit amet</td>
+                        <td data-taskid="3"><span class="tag info">2 days</span></td>
+                        <td data-taskid="3">Lorem ipsum dolor sit amet</td>
+                    </tr>
+                    <tr>
+                        <td data-taskid="1"><span class="tag info">2 days</span></td>
+                        <td data-taskid="1">Lorem ipsum dolor sit amet</td>
+                        <td data-taskid="2"><span class="tag info">2 days</span></td>
+                        <td data-taskid="2">Lorem ipsum dolor sit amet</td>
+                    </tr>
+
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="row padding10" style="width: 90%;margin: 0 auto;">
+                <span class="align-left">Map options</span>
+                <!--<button class="button" onclick="map.repopulate()"><span class="fg-blue mif-rocket mif-2x"></span> Repopulate</button>-->
+                <button class="button" onclick="map.center()"><span class="fg-blue mif-earth mif-2x"></span> Wrap all</button>
+                <button class="button"><span class="fg-blue mif-alarm mif-2x"></span> Show urgent [X]</button>
+                <button class="button"><span class="fg-blue mif-layers mif-2x"></span> Color by priority [X]</button>
+            </div>
+
+            <div id="map" class="fg-dark row" style="height: 300px;width: 90%;margin: 10px auto;"></div>
+
+
+        </div>
+    </div>
+
 
 {% endblock %}
 
@@ -17,8 +111,15 @@
 
 <script>
 
-    map.init(true);
-    map.repopulate();
+    $(document).ready(function(){
+        map.init(false);
+        map.repopulate();
+
+        $('#map-task-table td').click(function(){
+            map.panToTask($(this).attr('data-taskid'));
+        });
+    });
+
 
 </script>
 

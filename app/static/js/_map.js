@@ -15,12 +15,12 @@ var map = (function(L, $) {
 
     // TEST ONLY
     var points = [
-        {lat: 50.05346, lng: 19.8535},
-        {lat: 50.06657, lng: 19.98894},
-        {lat: 50.04762, lng: 19.94637},
-        {lat: 50.04773, lng: 19.90963},
-        {lat: 50.05346, lng: 19.8535},
-        {lat: 50.07285, lng: 19.94688}
+        {id: 1, lat: 50.05346, lng: 19.8535},
+        {id: 2, lat: 50.06657, lng: 19.98894},
+        {id: 3, lat: 50.04762, lng: 19.94637},
+        {id: 4, lat: 50.04773, lng: 19.90963},
+        {id: 5, lat: 50.05346, lng: 19.8535},
+        {id: 6, lat: 50.07285, lng: 19.94688}
     ];
     // END TEST
 
@@ -50,6 +50,23 @@ var map = (function(L, $) {
             .openOn(_map);
     }
 
+    function panToTask(task_id) {
+        var task;
+
+        console.log(task_id);
+
+        for(var i=0; i<points.length; i++)
+            if(points[i].id == task_id)
+                task = points[i];
+
+        console.log(task);
+        try {
+            _map.panTo([task.lat, task.lng]);
+        } catch(e){
+            console.log('[MAP] panToTask ERROR :<');
+        }
+    }
+
 
 
     function geoSuccess(p) {
@@ -76,9 +93,12 @@ var map = (function(L, $) {
 
     function init(geo) {
 
+        // async
         if(geo && geoPosition.init()){
             geoPosition.getCurrentPosition(geoSuccess, geoError);
-        } else {
+        }
+        // sync
+        else {
             _map = L.map('map').setView([50.07733, 19.91306], 13);
 
             L.tileLayer(MB_URL, {
@@ -116,7 +136,8 @@ var map = (function(L, $) {
     return {
         init: init,
         repopulate: repopulate,
-        center: centerMap
+        center: centerMap,
+        panToTask: panToTask
     }
 
 
