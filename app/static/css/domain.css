@@ -11,6 +11,11 @@ footer .grid .cell a:hover {color: inherit;text-decoration: underline;}
 
 .app-bar .app-bar-menu > li > a.active {background-color: #005696;}
 
+.content-block {
+    width: 90%;
+    margin: 0 auto;
+}
+
 /* -------------------- LOGIN FORM ------------------- */
 
 .login-form {

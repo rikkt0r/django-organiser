@@ -4,51 +4,53 @@
 
 {% block content %}
 
-    <div class="jumbotron">
-        <h2>Task list</h2>
-    </div>
+    <div class="content-block">
 
-    <div class="row">
-        <div class="col-xs-12 col-sm-8 center-block">
+        <h2>Your tasks</h2>
 
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>When</th>
-                  <th>What</th>
-                  <th>Files</th>
-                  <th>Priority</th>
-                  <th>Public</th>
-                </tr>
-              </thead>
-              <tbody>
-              {# <th scope="row">1</th>#}
-              {% for task in tasks %}
-                <tr>
-                  <td>{{ task.date_to|date:"Y-m-d h:m A" }}</td>
-                  <td><a href="/tasks/{{task.task_id}}">{{ task.name }}</a></td>
-                  <td>-</td>
-                  <td>
-                      {% if task.priority == 1 %}
-                        <span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span></td>
-                      {% elif task.priority == 2 %}
-                        <span class="glyphicon glyphicon-flash" aria-hidden="true"></span>
-                      {% elif task.priority == 3 %}
-                        <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
-                      {% else %}
-                        <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
-                      {% endif %}
+        <div class="row">
+                <table class="bg-white fg-dark table striped hovered align-left">
+                  <thead>
+                    <tr>
+                      <th>Countdown</th>
+                      <th>When</th>
+                      <th>What</th>
+                      <th>Files</th>
+                      <th>Priority</th>
+                      <th>Public</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {# <th scope="row">1</th>#}
+                  {% for task in tasks %}
+                    <tr>
+                      <td>
+                          <div data-days="2" data-role="countdown" class="countdown"></div>
+                      </td>
+                      <td>{{ task.date_to|date:"Y-m-d h:m A" }}</td>
+                      <td><a href="/tasks/{{task.task_id}}">{{ task.name }}</a></td>
+                      <td>-</td>
+                      <td>
+                          {% if task.priority == 1 %}
+                            <span class="fg-blue mif-hour-glass"></span></td>
+                          {% elif task.priority == 2 %}
+                            <span class="fg-blue mif-eye"></span>
+                          {% elif task.priority == 3 %}
+                            <span class="fg-blue mif-warning"></span>
+                          {% else %}
+                            <span class="fg-blue mif-magic-wand"></span>
+                          {% endif %}
 
-                  <td>
-                      {% if task.public %}
-                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
-                      {% else %}
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
-                      {% endif %}
-                </tr>
-              {% endfor %}
-              </tbody>
-            </table>
+                      <td>
+                          {% if task.public %}
+                            <span class="fg-blue mif-checkmark"></span></td>
+                          {% else %}
+                            <span class="fg-blue mif-cross"></span></td>
+                          {% endif %}
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
         </div>
     </div>
 

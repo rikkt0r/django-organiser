@@ -12,15 +12,31 @@ var map = (function(L, $) {
         userLat=Number.NaN,
         userLng=Number.NaN;
 
+    var CustomIcon = L.Icon.extend({
+        options: {
+            shadowUrl: 'marker-shadow.png',
+            shadowAnchor: [1, 41],
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        }
+    });
+
+    var blackIcon = new CustomIcon({iconUrl: 'marker-black.png'}),
+        redIcon = new LeafIcon({iconUrl: 'marker-red.png'}),
+        yellowIcon = new LeafIcon({iconUrl: 'marker-yellow.png'}),
+        blueIcon = new LeafIcon({iconUrl: 'blue-yellow.png'});
+
 
     // TEST ONLY
     var points = [
-        {id: 1, lat: 50.05346, lng: 19.8535},
-        {id: 2, lat: 50.03597, lng: 20.04627},
-        {id: 3, lat: 50.04762, lng: 19.94637},
-        {id: 4, lat: 50.04773, lng: 19.90963},
-        {id: 5, lat: 50.05346, lng: 19.8535},
-        {id: 6, lat: 50.07285, lng: 19.94688}
+        {id: 1, lat: 50.05346, lng: 19.8535, priority: 1},
+        {id: 2, lat: 50.03597, lng: 20.04627, priority: 2},
+        {id: 3, lat: 50.04762, lng: 19.94637, priority: 3},
+        {id: 4, lat: 50.04773, lng: 19.90963, priority: 1},
+        {id: 5, lat: 50.05346, lng: 19.8535, priority: 2},
+        {id: 6, lat: 50.07285, lng: 19.94688, priority: 3}
     ];
     // END TEST
 
