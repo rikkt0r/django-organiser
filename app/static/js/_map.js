@@ -14,7 +14,7 @@ var map = (function(L, $) {
 
     var CustomIcon = L.Icon.extend({
         options: {
-            shadowUrl: 'marker-shadow.png',
+            shadowUrl: '/static/images/leaflet/marker-shadow.png',
             shadowAnchor: [1, 41],
             iconSize: [25, 41],
             iconAnchor: [12, 41],
@@ -23,10 +23,10 @@ var map = (function(L, $) {
         }
     });
 
-    var blackIcon = new CustomIcon({iconUrl: 'marker-black.png'}),
-        redIcon = new LeafIcon({iconUrl: 'marker-red.png'}),
-        yellowIcon = new LeafIcon({iconUrl: 'marker-yellow.png'}),
-        blueIcon = new LeafIcon({iconUrl: 'blue-yellow.png'});
+    var blackIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-black.png'}),
+        redIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-red.png'}),
+        yellowIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-yellow.png'}),
+        blueIcon = new CustomIcon({iconUrl: '/static/images/leaflet/blue-yellow.png'});
 
 
     // TEST ONLY
@@ -151,8 +151,30 @@ var map = (function(L, $) {
                 }
             }
 
-            for(var i=0; i<points.length;i++)
-                group.push(L.marker([points[i].lat, points[i].lng]).bindPopup("Something to do here")); // .openPopup();
+            // .openPopup();
+            for(var i=0; i<points.length;i++) {
+
+                switch(points[i].priority) {
+
+                    case 1:
+                        group.push(L.marker([points[i].lat, points[i].lng], {icon: yellowIcon}).bindPopup("Something to do here"));
+                        break;
+
+                    case 2:
+                        group.push(L.marker([points[i].lat, points[i].lng], {icon: redIcon}).bindPopup("Something to do here"));
+                        break;
+
+                    case 3:
+                        group.push(L.marker([points[i].lat, points[i].lng], {icon: blackIcon}).bindPopup("Something to do here"));
+                        break;
+
+                    default:
+                        group.push(L.marker([points[i].lat, points[i].lng]).bindPopup("Something to do here"));
+                        break;
+                }
+
+            }
+
 
             pointLayer = L.layerGroup(group).addTo(_map);
         }
