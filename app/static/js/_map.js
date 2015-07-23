@@ -1,9 +1,10 @@
 'use strict';
 /*
 TODO
-1. legenda
-2. przycisk kolorowania == toggle
-3.
+1. ADD MAP LEGEND
+2. COLORING BUTTON ==> toggle
+3. REMAKE DRAGGABLE MARKER TO USE CALLBACK
+4. MAYBE DYNAMIC LOCATION ?
 
  */
 var map = (function(L, $) {
@@ -16,6 +17,7 @@ var map = (function(L, $) {
         OSM_ATTRIB = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         _map,
         pointLayer,
+        movablePinAdded = false,
         popup=L.popup(),
         userLat=Number.NaN,
         userLng=Number.NaN;
@@ -48,6 +50,48 @@ var map = (function(L, $) {
         {id: 6, lat: 50.07285, lng: 19.94688, priority: 3, name: 'Name of the task', dateDue: '30.07.2015'}
     ];
     // END TEST
+
+
+
+    function __geoSuccess(e) {
+        console.log([userLat, userLng]);
+
+        L.marker(e.latlng, {icon: userIcon}).addTo(_map).bindPopup("<b>You are here</b><br/> or " + e.accuracy / 2 + "m away").openPopup();
+    }
+
+    function __geoError(e) {
+        console.log('[error] getting coordinates :< USER, WHY U NO ACCEPT. ' + e.message);
+    }
+
+    function init() {
+
+        _map = L.map('map');
+        _map.on('locationfound', __geoSuccess);
+        _map.on('locationerror', __geoError);
+        //_map.on('click', onMapClick);
+
+        L.tileLayer(MB_URL, {
+            attribution: OSM_ATTRIB,
+            id: 'mapbox.streets',
+            maxZoom: 15
+        }).addTo(_map);
+
+        _map.locate({setView: true, maxZoom: 14});
+    }
+
+
+    function __addMovableMarker(callback_fn) {
+        if (!movablePinAdded) {
+            L.marker(_map.getCenter(), {'draggable': true}).on('dragend', function (evt) {
+                var coords = evt.target.getLatLng();
+                console.log(coords);
+                $('#lat').val(coords['lat']);
+                $('#lng').val(coords['lng']);
+            }).addTo(_map);
+
+            movablePinAdded = true;
+        }
+    }
 
     function __centerMap(return_center) {
         var maxLat=Number.NEGATIVE_INFINITY,
@@ -104,36 +148,6 @@ var map = (function(L, $) {
 
 
 
-    function __geoSuccess(p) {
-        userLat = p.coords.latitude.toFixed(6);
-        userLng = p.coords.longitude.toFixed(6);
-        console.log([userLat, userLng]);
-
-        L.marker([userLat, userLng], {icon: userIcon}).bindPopup("Oh,<br/>Here you are.").addTo(_map).openPopup();
-    }
-
-    function __geoError() {
-        console.log('[error] getting coordinates :< USER, WHY U NO ACCEPT.')
-    }
-
-    function init(geo) {
-
-        // async
-        if(geo && geoPosition.init()){
-            geoPosition.getCurrentPosition(__geoSuccess, __geoError);
-        }
-        _map = L.map('map').setView(__centerMap(true), 13);
-
-        L.tileLayer(MB_URL, {
-            attribution: OSM_ATTRIB,
-            id: 'mapbox.streets',
-            maxZoom: 15
-        }).addTo(_map);
-
-        //_map.on('click', onMapClick);
-
-        repopulateClassic();
-    }
 
     function userCheckLocation(){
         return userLat && userLng;
@@ -235,6 +249,10 @@ var map = (function(L, $) {
         __centerMap(false);
     }
 
+    function userChooseLocation($handler_lat, $handler_lng) {
+        __addMovableMarker('aa');
+    }
+
     return {
         init: init,
         repopulate: repopulateClassic,
@@ -244,6 +262,7 @@ var map = (function(L, $) {
         panToTask: panToTask,
         userLocation: userLocation,
         userCheckLocation: userCheckLocation,
+        userChooseLocation: userChooseLocation,
         DEBUG: function(){return _map}
     }
 
