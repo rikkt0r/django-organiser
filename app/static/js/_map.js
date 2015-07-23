@@ -1,5 +1,11 @@
 'use strict';
+/*
+TODO
+1. legenda
+2. przycisk kolorowania == toggle
+3.
 
+ */
 var map = (function(L, $) {
     var ACCESS_TOKEN = 'pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ',
         MB_ATTR = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
@@ -10,7 +16,6 @@ var map = (function(L, $) {
         OSM_ATTRIB = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         _map,
         pointLayer,
-        userLocationShown = false,
         popup=L.popup(),
         userLat=Number.NaN,
         userLng=Number.NaN;

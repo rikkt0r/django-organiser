@@ -20,9 +20,8 @@ class Task(models.Model):
 
     PRIORITIES = (
         (0, 'No rush'),
-        (1, 'Just another task'),
-        (2, 'Do it quickly'),
-        (3, 'LIFE THREATENING')
+        (1, 'Normal'),
+        (2, 'Important')
     )
 
     task_id = models.AutoField(primary_key=True)

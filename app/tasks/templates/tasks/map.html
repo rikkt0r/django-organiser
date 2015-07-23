@@ -122,7 +122,7 @@
         map.init(true);
         map.repopulate();
 
-        $('#map-task-table td').click(function(){
+        $('#map-task-table').find('td').click(function(){
             map.panToTask($(this).attr('data-taskid'));
         });
 

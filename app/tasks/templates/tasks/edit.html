@@ -4,44 +4,85 @@
 
 {% block content %}
 
-    <div class="jumbotron">
+    <div class="content-block">
         <h1>Editing your task,</h1>
-        <p class="lead">bitch</p>
-    </div>
+        <h3>bitch</h3>
 
-    <div class="row">
+        <div data-role="preloader" data-type="ring"></div>
+        <!--<div data-role="preloader" data-type="ring" data-style="dark"></div>-->
 
-        <div class="col-xs-12 col-sm-10 col-md-8 center-block">
 
-            <form method="POST" role="form" class="form-horizontal">
-                <div class="form-group">
-                    <label for="task_name">Task name</label>
-                    <input type="text" class="form-control" id="task_name" name="task_name" placeholder="Email">
-                </div>
+            <form method="POST" role="form" class="align-left">
+                <div class="grid">
 
-                <div class="form-group row">
-                    <label for="task_from" class="col-xs-2 control-label">From</label>
-                    <div class="col-xs-4">
-                        <input type="text" class="form-control" id="task_from" name="task_from" placeholder="Choose date">
+                    <div class="row">
+                        <label for="task_name" class="text-bold">Task name</label>
+                        <div class="input-control text full-size">
+                            <input type="text" class="form-control" id="task_name" name="task_name" placeholder="Task name">
+                        </div>
                     </div>
-                    <label for="task_to" class="col-xs-2 control-label">To</label>
-                    <div class="col-xs-4">
-                        <input type="text" class="form-control" id="task_to" name="task_to" placeholder="Choose date">
+
+                    <div class="row cells2">
+                        <div class="cell">
+                            <label for="task_from" class="text-bold">From</label>
+                            <div class="input-control text full-size">
+                                <span class="mif-calendar prepend-icon"></span>
+                                <input type="text" class="form-control" id="task_from" name="task_from" placeholder="Choose date">
+                            </div>
+                        </div>
+
+                        <div class="cell">
+                            <label for="task_to" class="text-bold">To</label>
+                            <div class="input-control text full-size">
+                                <span class="mif-calendar prepend-icon"></span>
+                                <input type="text" class="form-control" id="task_to" name="task_to" placeholder="Choose date">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <h5 class="text-bold">Priority</h5>
+                    <div class="row cells3 align-center">
+                        <div class="cell">
+                            <label class="input-control radio small-check">
+                                <input name="priority" type="radio">
+                                <span class="check"></span>
+                                <span class="caption">No rush <span class="mif-magic-wand mif-2x"></span></span>
+                            </label>
+                        </div>
+                        <div class="cell">
+                            <label class="input-control radio small-check">
+                                <input name="priority" type="radio">
+                                <span class="check"></span>
+                                <span class="caption">Normal <span class="mif-hour-glass mif-2x"></span></span>
+                            </label>
+                        </div>
+                            <label class="input-control radio small-check">
+                                <input name="priority" type="radio">
+                                <span class="check"></span>
+                                <span class="caption">Important <span class="mif-warning mif-2x"></span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label for="task_description" class="text-bold">Description</label>
+                        <div class="input-control textarea full-size">
+                            <textarea id="task_description" name="task_description"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label for="file_upload" class="text-bold">File upload</label>
+                        <div class="input-control file" data-role="input">
+                            <input id="file_upload" type="file">
+                            <button class="button"><span class="mif-folder"></span></button>
+                        </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="task_description">Description</label>
-                    <textarea id="task_description" name="task_description"></textarea>
-                </div>
-
             </form>
         </div>
-
     </div>
-
-
-
 
 
 {% endblock %}
