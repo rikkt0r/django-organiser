@@ -94,8 +94,8 @@
                     <!--<button class="button" onclick="map.repopulate()"><span class="fg-blue mif-rocket mif-2x"></span> Repopulate</button>-->
                     <button class="button map-user-location" onclick="map.userLocation()"><span class="fg-blue mif-vpn-lock mif-2x"></span> Your location</button>
                     <button class="button" onclick="map.center()"><span class="fg-blue mif-earth mif-2x"></span> Wrap all</button>
-                    <button class="button"><span class="fg-blue mif-alarm mif-2x"></span> Show urgent [X]</button>
-                    <button class="button"><span class="fg-blue mif-layers mif-2x"></span> Color by priority [X]</button>
+                    <button class="button" onclick="map.repopulateUrgent()"><span class="fg-blue mif-alarm mif-2x"></span> Only urgent</button>
+                    <button class="button" onclick="map.repopulatePriority()"><span class="fg-blue mif-layers mif-2x"></span> Color by priority</button>
                 </div>
 
                 <div id="map" class="fg-dark row" style="height: 300px;margin-top: 10px"></div>
@@ -113,6 +113,10 @@
 <script src="/static/js/_map.js"></script>
 
 <script>
+
+    function showTask(task_id){
+        console.log('pokazuje funkcje o id: ' + task_id.toString());
+    }
 
     $(document).ready(function(){
         map.init(true);

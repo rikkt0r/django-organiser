@@ -1,3 +1,5 @@
+'use strict';
+
 var map = (function(L, $) {
     var ACCESS_TOKEN = 'pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ',
         MB_ATTR = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
@@ -8,6 +10,7 @@ var map = (function(L, $) {
         OSM_ATTRIB = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         _map,
         pointLayer,
+        userLocationShown = false,
         popup=L.popup(),
         userLat=Number.NaN,
         userLng=Number.NaN;
@@ -26,37 +29,42 @@ var map = (function(L, $) {
     var blackIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-black.png'}),
         redIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-red.png'}),
         yellowIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-yellow.png'}),
-        blueIcon = new CustomIcon({iconUrl: '/static/images/leaflet/blue-yellow.png'});
+        blueIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-blue.png'}),
+        userIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-user.png'});
 
 
     // TEST ONLY
     var points = [
-        {id: 1, lat: 50.05346, lng: 19.8535, priority: 1},
-        {id: 2, lat: 50.03597, lng: 20.04627, priority: 2},
-        {id: 3, lat: 50.04762, lng: 19.94637, priority: 3},
-        {id: 4, lat: 50.04773, lng: 19.90963, priority: 1},
-        {id: 5, lat: 50.05346, lng: 19.8535, priority: 2},
-        {id: 6, lat: 50.07285, lng: 19.94688, priority: 3}
+        {id: 1, lat: 50.05346, lng: 19.8535, priority: 1, name: 'Name of the task, bla bla', dateDue: '30.07.2015'},
+        {id: 2, lat: 50.03597, lng: 20.04627, priority: 2, name: 'Name of the task, bla bla', dateDue: '30.07.2015'},
+        {id: 3, lat: 50.04762, lng: 19.94637, priority: 3, name: 'Name of the task, bla bla', dateDue: '30.07.2015'},
+        {id: 4, lat: 50.04773, lng: 19.90963, priority: 1, name: 'Name of the task', dateDue: '30.07.2015'},
+        {id: 5, lat: 50.05346, lng: 19.8535, priority: 2, name: 'Name of the task, bla bla', dateDue: '30.07.2015'},
+        {id: 6, lat: 50.07285, lng: 19.94688, priority: 3, name: 'Name of the task', dateDue: '30.07.2015'}
     ];
     // END TEST
 
-    function centerMap() {
+    function __centerMap(return_center) {
         var maxLat=Number.NEGATIVE_INFINITY,
             maxLng=Number.NEGATIVE_INFINITY,
             minLat=Number.POSITIVE_INFINITY,
             minLng=Number.POSITIVE_INFINITY;
 
-        for(var i=0;i<points.length;i++){
+        for(var i=0; i<points.length; i++) {
             if(points[i].lat > maxLat) maxLat = points[i].lat;
             if(points[i].lng > maxLng) maxLng = points[i].lng;
             if(points[i].lat < minLat) minLat = points[i].lat;
             if(points[i].lng < minLng) minLng = points[i].lng;
         }
 
-        _map.fitBounds(new L.latLngBounds(
-            new L.latLng(minLat, minLng),
-            new L.latLng(maxLat, maxLng)
-        ));
+        if(return_center) {
+            return [(maxLat+minLat)/2, (maxLng+minLng/2)];
+        } else {
+            _map.fitBounds(new L.latLngBounds(
+                new L.latLng(minLat, minLng),
+                new L.latLng(maxLat, maxLng)
+            ));
+        }
     }
 
     function onMapClick(e) {
@@ -69,13 +77,19 @@ var map = (function(L, $) {
     function panToTask(task_id) {
         var task;
 
-        console.log(task_id);
+        for(var layer in _map._layers){
+            if(_map._layers[layer].task_id == task_id){
+                _map._layers[layer].openPopup();
+                break;
+            }
+        }
 
         for(var i=0; i<points.length; i++)
-            if(points[i].id == task_id)
+            if(points[i].id == task_id){
                 task = points[i];
+                break;
+            }
 
-        console.log(task);
         try {
             _map.panTo([task.lat, task.lng]);
         } catch(e){
@@ -85,11 +99,25 @@ var map = (function(L, $) {
 
 
 
-    function geoSuccess(p) {
+    function __geoSuccess(p) {
         userLat = p.coords.latitude.toFixed(6);
         userLng = p.coords.longitude.toFixed(6);
         console.log([userLat, userLng]);
-        _map = L.map('map').setView([userLat, userLng], 13);
+
+        L.marker([userLat, userLng], {icon: userIcon}).bindPopup("Oh,<br/>Here you are.").addTo(_map).openPopup();
+    }
+
+    function __geoError() {
+        console.log('[error] getting coordinates :< USER, WHY U NO ACCEPT.')
+    }
+
+    function init(geo) {
+
+        // async
+        if(geo && geoPosition.init()){
+            geoPosition.getCurrentPosition(__geoSuccess, __geoError);
+        }
+        _map = L.map('map').setView(__centerMap(true), 13);
 
         L.tileLayer(MB_URL, {
             attribution: OSM_ATTRIB,
@@ -97,37 +125,9 @@ var map = (function(L, $) {
             maxZoom: 15
         }).addTo(_map);
 
-        setTimeout(centerMap, 2000);
-        _map.on('click', onMapClick);
+        //_map.on('click', onMapClick);
 
-        repopulate();
-    }
-
-    function geoError() {
-        alert("Could not find you!");
-    }
-
-    function init(geo) {
-
-        // async
-        if(geo && geoPosition.init()){
-            geoPosition.getCurrentPosition(geoSuccess, geoError);
-        }
-        // sync
-        else {
-            _map = L.map('map').setView([50.07733, 19.91306], 13);
-
-            L.tileLayer(MB_URL, {
-                attribution: OSM_ATTRIB,
-                id: 'mapbox.streets',
-                maxZoom: 15
-            }).addTo(_map);
-
-            setTimeout(centerMap, 2000);
-            _map.on('click', onMapClick);
-
-            repopulate();
-        }
+        repopulateClassic();
     }
 
     function userCheckLocation(){
@@ -135,11 +135,16 @@ var map = (function(L, $) {
     }
 
     function userLocation(){
-        if(userCheckLocation())
+        if(userCheckLocation()) {
             _map.panTo([userLat, userLng]);
+        }
     }
 
-    function repopulate(){
+    function __preparePopup(id, title, dateDue) {
+        return '<b>Due: ' + dateDue + '</b><br/><hr class="thin"><span>' + Utils.cutToLength(title, 16) + '</span><br/><a class="place-left" href="#map" onclick="showTask(' + id + ')">&raquo; more</a> ';
+    }
+
+    function __repopulate(urgent, priority){
         if(_map){
             var group = [];
 
@@ -147,46 +152,94 @@ var map = (function(L, $) {
                 try {
                     _map.removeLayer(pointLayer);
                 }catch(e){
-                    //nothing
+                    console.log('[MAP] repopulate ERROR :<');
                 }
             }
 
-            // .openPopup();
-            for(var i=0; i<points.length;i++) {
+            if(priority) {
+                for(var i=0; i<points.length;i++) {
 
-                switch(points[i].priority) {
+                    switch(points[i].priority) {
 
-                    case 1:
-                        group.push(L.marker([points[i].lat, points[i].lng], {icon: yellowIcon}).bindPopup("Something to do here"));
-                        break;
+                        case 1:
+                            var marker = L.marker([points[i].lat, points[i].lng], {icon: yellowIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
+                            marker.task_id = points[i].id;
+                            group.push(marker);
+                            break;
 
-                    case 2:
-                        group.push(L.marker([points[i].lat, points[i].lng], {icon: redIcon}).bindPopup("Something to do here"));
-                        break;
+                        case 2:
+                            var marker = L.marker([points[i].lat, points[i].lng], {icon: redIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
+                            marker.task_id = points[i].id;
+                            group.push(marker);
+                            break;
 
-                    case 3:
-                        group.push(L.marker([points[i].lat, points[i].lng], {icon: blackIcon}).bindPopup("Something to do here"));
-                        break;
+                        case 3:
+                            var marker = L.marker([points[i].lat, points[i].lng], {icon: blackIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
+                            marker.task_id = points[i].id;
+                            group.push(marker);
+                            break;
 
-                    default:
-                        group.push(L.marker([points[i].lat, points[i].lng]).bindPopup("Something to do here"));
-                        break;
+                        default:
+                            var marker = L.marker([points[i].lat, points[i].lng]).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
+                            marker.task_id = points[i].id;
+                            group.push(marker);
+                            break;
+                    }
+
                 }
-
+            } else if (urgent) {
+                for(var i=0; i<points.length;i++)
+                    if(points[i].priority == 2) {
+                        var marker = L.marker([points[i].lat, points[i].lng], {icon: redIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
+                        marker.task_id = points[i].id;
+                        group.push(marker);
+                    }
+            } else {
+                for (var i = 0; i < points.length; i++) {
+                    var marker = L.marker([points[i].lat, points[i].lng]).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
+                    marker.task_id = points[i].id;
+                    group.push(marker);
+                }
             }
-
 
             pointLayer = L.layerGroup(group).addTo(_map);
+
+
+            __centerMap();
         }
+    }
+
+
+    /* /-------------------------------------------------------------------------------------------------------------------------------------\
+                                                            Public functions
+       \-------------------------------------------------------------------------------------------------------------------------------------/ */
+
+    function repopulateUrgent() {
+        __repopulate(true, false);
+    }
+
+    function repopulatePriority() {
+        __repopulate(false, true);
+    }
+
+    function repopulateClassic() {
+        __repopulate(false, false);
+    }
+
+    function center() {
+        __centerMap(false);
     }
 
     return {
         init: init,
-        repopulate: repopulate,
-        center: centerMap,
+        repopulate: repopulateClassic,
+        repopulatePriority: repopulatePriority,
+        repopulateUrgent: repopulateUrgent,
+        center: center,
         panToTask: panToTask,
         userLocation: userLocation,
-        userCheckLocation: userCheckLocation
+        userCheckLocation: userCheckLocation,
+        DEBUG: function(){return _map}
     }
 
 
