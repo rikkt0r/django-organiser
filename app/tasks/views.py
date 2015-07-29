@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse, HttpResponse, Http404
+from django.views.decorators.cache import cache_page
 from django.http import JsonResponse
-# from django.views.decorators.cache import cache_page
-from django.http import JsonResponse
-from django.template.backends.utils import csrf_input_lazy, csrf_token_lazy
+from .forms import TaskForm
+from .models import Task
 
 
 # main-mega-main main site.
@@ -20,16 +21,6 @@ def test_json(request):
     })
 
 
-# def tasks(request):
-#
-#     ctx = dict()
-#     ctx['csrf_input'] = csrf_input_lazy(request)
-#     ctx['csrf_token'] = csrf_token_lazy(request)
-#     ctx['task_list'] = [{'id': i, 'name': 'task '+str(i)} for i in range(15)]
-#
-#     return render(request, "organiser/tasks.html", ctx)
-
-
 def tasks_user(request, username=''):
     return render(request, "lists/user.html", context={
         'username': username
@@ -39,26 +30,7 @@ def tasks_user(request, username=''):
 @login_required
 def tasks_index(request, page_id=1):
 
-    from .models import Task
-
-    tasks = Task.objects.filter(user_id=1)
-    # tasks = [
-    #     {'date_to': 'abc',
-    #      'name': 'task name',
-    #      'files': 1,
-    #      'priority': 2,
-    #      'public': True
-    #      },
-    #
-    #     {'date_to': 'abc',
-    #      'name': 'task name',
-    #      'files': 1,
-    #      'priority': 2,
-    #      'public': True
-    #      },
-    #
-    # ]
-    print(tasks)
+    tasks = Task.objects.filter(user_id=request.user.id)
 
     return render(request, "tasks/index.html", context={
         'page_id': page_id,
@@ -73,13 +45,68 @@ def tasks_map(request):
 
 @login_required
 def tasks_new(request):
-    return render(request, "tasks/edit.html")
+
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+
+        if form.is_valid():
+
+            # task_id omitted
+            # date_created omitted
+            # date_modified omitted
+            data = form.cleaned_data
+            data['status'] = 1
+            data['user'] = request.user
+            task = Task(**data)
+
+            task.save()
+            return redirect('/tasks/')
+        else:
+            return render(request, "tasks/new_edit.html", context={
+                'form': form
+            })
+    else:
+        form = TaskForm()
+
+    return render(request, "tasks/new_edit.html", context={
+        'form': form
+    })
 
 
 @login_required
 def tasks_edit(request, task_id):
-    return render(request, "tasks/edit.html", context={
-        'task_id': task_id
+
+    if request.method == 'POST' and int(task_id) >= 1:
+        task = get_object_or_404(Task, pk=task_id)
+        if task.user != request.user:
+            raise Http404("It's not your task mate :<")
+
+        form = TaskForm(request.POST)
+        # data = form.cleaned_data
+
+    elif int(task_id) >= 1:
+        task = get_object_or_404(Task, pk=task_id)
+
+        form = TaskForm(initial={
+            'date_from': task.date_from,
+            'date_to': task.date_to,
+            'description': task.description,
+            'lat': task.lat,
+            'lng': task.lng,
+            'name': task.name,
+            'place_desc': task.place_desc,
+            'priority': task.priority,
+            'public': task.public,
+            'repeat': task.repeat,
+            'repeat_days': task.repeat_days,
+            'status': task.status
+        })
+    else:
+        raise Http404("Sorry, task doesn't exist")
+
+    return render(request, "tasks/new_edit.html", context={
+        'form': form,
+        'edit_task': True
     })
 
 

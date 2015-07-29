@@ -28,7 +28,7 @@
                           <!--<div data-days="2" data-role="countdown" class="countdown"></div>-->
                       <!--</td>-->
                       <td>{{ task.date_to|date:"Y-m-d h:m A" }}</td>
-                      <td><a href="/tasks/{{task.task_id}}">{{ task.name }}</a></td>
+                      <td><a href="{% url 'tasks_edit' task_id=task.id%}">{{task.name}}</a></td>
                       <td>-</td>
                       <td>
                           {% if task.priority == 1 %}

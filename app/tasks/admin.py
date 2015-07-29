@@ -9,10 +9,10 @@ class TaskAdmin(admin.ModelAdmin):
 
     readonly_fields = ('date_created', 'date_modified')
 
-    list_display = ('task_id', 'user_id', 'date_created', 'public', 'status')
+    list_display = ('id', 'user', 'date_created', 'public', 'status')
 
     fieldsets = [
-        ('General',     {'fields': ['name', 'description', 'priority', 'user_id']}),
+        ('General',     {'fields': ['name', 'description', 'priority', 'user']}),
         ('Location',    {'fields': ['lat', 'lng', 'place_desc']}),
         ('Dates',       {'fields': ['date_created', 'date_modified', 'date_from', 'date_to']}),
         ('Repeat',      {'fields': ['repeat', 'repeat_days']}),
@@ -22,12 +22,12 @@ class TaskAdmin(admin.ModelAdmin):
 
 class TaskFileAdmin(admin.ModelAdmin):
 
-    readonly_fields = ('task_file_id', 'date_created')
+    readonly_fields = ('id', 'date_created')
 
-    list_display = ('task_file_id', 'task_id', 'type', 'size', 'date_created', 'status')
+    list_display = ('id', 'id', 'type', 'size', 'date_created', 'status')
 
     fieldsets = [
-        ('General',         {'fields': ['task_file_id', 'task_id']}),
+        ('General',         {'fields': ['id', 'task']}),
         ('Descriptions',    {'fields': ['type', 'size', 'name']}),
         ('Dates, status',   {'fields': ['status', 'date_created']}),
         ('File',            {'fields': ['file']})
@@ -36,12 +36,12 @@ class TaskFileAdmin(admin.ModelAdmin):
 
 class TaskLogAdmin(admin.ModelAdmin):
 
-    readonly_fields = ('task_log_id', 'task_id', 'date_created')
+    readonly_fields = ('id', 'task', 'date_created')
 
-    list_display = ('task_log_id', 'task_id', 'date_created', 'status')
+    list_display = ('id', 'task', 'date_created', 'status')
 
     fieldsets = [
-        ('General',         {'fields': ['task_log_id', 'task_id']}),
+        ('General',         {'fields': ['id', 'task']}),
         ('Dates created',   {'fields': ['date_created']}),
         ('Description',     {'fields': ['description']}),
     ]

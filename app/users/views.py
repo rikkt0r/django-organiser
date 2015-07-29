@@ -29,7 +29,7 @@ def users_login(request):
             if user:
                 if user.is_active:
                     login(request, user)
-                    return redirect('/')
+                    return redirect('/tasks/')
                 else:
                     return render(request, "users/login.html", context={
                         'error': 'disabled account, you idjit',

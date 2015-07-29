@@ -85,8 +85,8 @@ var map = (function(L, $) {
             L.marker(_map.getCenter(), {'draggable': true}).on('dragend', function (evt) {
                 var coords = evt.target.getLatLng();
                 console.log(coords);
-                $('#lat').val(coords['lat']);
-                $('#lng').val(coords['lng']);
+                $('#id_lat').val(Utils.roundCoord(coords['lat']));
+                $('#id_lng').val(Utils.roundCoord(coords['lng']));
             }).addTo(_map);
 
             movablePinAdded = true;

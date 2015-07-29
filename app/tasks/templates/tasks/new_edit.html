@@ -1,0 +1,216 @@
+{% extends "base_template.html" %}
+
+{% block menu_tasks %} active {% endblock %}
+
+{% block content %}
+
+    <div class="content-block">
+        {% if edit_task %}
+        <h1>Editing your task,</h1>
+        {% else %}
+        <h1>Creating your task,</h1>
+        {% endif %}
+        <h3>honorable {{request.user.username}}</h3>
+
+        {% if form.errors %}
+            <hr/>
+            <hr/>
+            {{ form.errors }}
+            <hr/>
+            <hr/>
+        {% endif %}
+
+        <!--<div data-role="preloader" data-type="ring"></div>-->
+        <!--<div data-role="preloader" data-type="ring" data-style="dark"></div>-->
+
+            <form method="POST" role="form" class="align-left">
+                <div class="grid">
+
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <input class="button primary" type="submit" value="Save changes">
+                    {% if edit_task %}
+                        <input class="button success" type="button" value="Set as completed" onclick="confirm('You sure?');">
+                        <input class="button danger" type="button" value="Delete task" onclick="confirm('You sure?');">
+                    {% endif %}
+                    </div>
+
+
+                    <div class="row">
+                        <label for="{{ form.name.id_for_label }}" class="text-bold">{{ form.name.label }}</label>
+                        <div class="input-control text full-size">
+                            {{ form.name }}
+                        </div>
+                    </div>
+
+                    <div class="row cells2">
+                        <div class="cell">
+                            <label for="{{ form.date_from.id_for_label }}" class="text-bold">{{ form.date_from.label }}</label>
+                            <div class="input-control text full-size">
+                                <span class="mif-calendar prepend-icon"></span>
+                                {{ form.date_from }}
+                            </div>
+                        </div>
+
+                        <div class="cell">
+                            <label for="{{ form.date_to.id_for_label }}" class="text-bold">{{ form.date_to.label }}</label>
+                            <div class="input-control text full-size">
+                                <span class="mif-calendar prepend-icon"></span>
+                                {{ form.date_to }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row cells2">
+                        <div class="cell">
+                            <label for="{{form.repeat.id_for_label}}" class="text-bold">{{form.repeat.label}}</label>
+                            <div class="input-control select full-size">
+                            <!--<div class="input-control select" data-role="select">-->
+                                {{ form.repeat }}
+                            </div>
+
+                        </div>
+
+                        <div class="cell">
+                            <label for="{{ form.repeat_days.id_for_label }}" class="text-bold">{{ form.repeat_days.label }}</label>
+                            <div class="input-control number full-size">
+                                {{ form.repeat_days }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5 class="text-bold">Priority</h5>
+
+                    <!-- cycle instead of forloop.counter == x,y,z.. -->
+                    <div class="row cells3 align-center">
+
+                        {% for choice in form.priority %}
+
+                        <div class="cell">
+                            <label class="input-control radio small-check">
+                                {{ choice.tag }}
+                                <span class="check"></span>
+                                <span class="caption">{{ choice.choice_label }}
+                                    {% cycle '<span class="mif-magic-wand mif-2x"></span>' '<span class="mif-hour-glass mif-2x"></span>' '<span class="mif-warning mif-2x"></span>' %}
+                                </span>
+                            </label>
+                        </div>
+
+
+                        {% endfor %}
+                    </div>
+
+                    <div class="row">
+                        <label for="{{ form.description.id_for_label }}" class="text-bold">{{ form.description.label }}</label>
+                        <div class="input-control textarea full-size">
+                            {{ form.description }}
+                        </div>
+                    </div>
+
+                    {% if edit_task %}
+                    <div class="row">
+                        <label for="file_upload" class="text-bold">File upload</label>
+                        <div class="input-control file" data-role="input">
+                            <input id="file_upload" type="file">
+                            <button class="button"><span class="mif-folder"></span></button>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="row">
+
+                        {{ form.lat }}
+                        {{ form.lng }}
+
+                        <div class="row">
+                            <button class="button map-user-location" onclick="map.userLocation()" type="button"><span class="fg-blue mif-vpn-lock mif-2x"></span> Your location</button>
+                            <button class="button map-user-location" onclick="map.userChooseLocation(1,2)" type="button"><span class="fg-blue mif-vpn-lock mif-2x"></span> Select task location</button>
+
+                            Move pin on map
+
+                        </div>
+
+                        <div class="row">
+                            <label for="{{ form.place_desc.id_for_label }}" class="text-bold">{{ form.place_desc.label }}</label>
+                            <div class="input-control text full-size">
+                                {{ form.place_desc }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div id="map" class="fg-dark" style="height: 200px;"></div>
+                        </div>
+                    </div>
+
+                    {% if not edit_task %}
+                        <h5 class="text-bold"><span class="mif-fire"></span>You will be able to upload files while editing task. Sorry, early site stage :(</h5>
+                    {% endif %}
+
+                    <div class="row">
+                        <label class="input-control checkbox">
+                            {{ form.public }}
+                            <span class="check"></span>
+                            <span class="caption">{{ form.public.label }}</span>
+                        </label>
+                    </div>
+
+                    <div class="row">
+                        <input class="button primary" type="submit" value="Save changes">
+                    {% if edit_task %}
+                        <input class="button success" type="button" value="Set as completed" onclick="confirm('You sure?');">
+                        <input class="button danger" type="button" value="Delete task" onclick="confirm('You sure?');">
+                    {% endif %}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/js/tinymce/tinymce.min.js"></script>
+    <script src="/static/js/jquery.datetimepicker.js"></script>
+
+    <script src="/static/js/_map.js"></script>
+
+    <script>
+
+        $(document).ready(function(){
+
+            // EDITORS ==============================
+
+            tinymce.init({
+                selector: "#id_description"
+            });
+            $('#id_date_from').datetimepicker({
+                dayOfWeekStart : 1,
+                lang:'en',
+                disabledDates:['2015/01/08','2015/01/09','12015/01/10'],
+                startDate:	'2015/01/05'
+            });
+            $('#id_date_to').datetimepicker({
+                dayOfWeekStart : 1,
+                lang:'en',
+                disabledDates:['2015/01/08','2015/01/09','12015/01/10'],
+                startDate:	'2015/01/05'
+            });
+
+            $('#id_repeat').change(function(){
+                if($(this).val() == 8) {
+                    $('#id_repeat_days').prop('disabled', false);
+                } else {
+                    $('#id_repeat_days').prop('disabled', true);
+                }
+            });
+
+            // MAP =================================
+
+            map.init();
+
+        });
+    </script>
+
+{% endblock %}

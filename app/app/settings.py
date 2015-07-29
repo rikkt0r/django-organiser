@@ -16,7 +16,7 @@ SECRET_KEY = 'p3o8$1)to2t^t6j4&6-@k==kidtx3t6o&ax*698x80$3kt9(kx'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'pwnag3.net', 'my-organiser.com', 'my-little-organiser.com']
 
 
 # Application definition

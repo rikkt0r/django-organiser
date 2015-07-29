@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Task(models.Model):
 
-    CHOICES = (
+    REPEAT = (
         (0, 'Do not repeat'),
         (1, 'Daily'),
         (2, 'Weekly'),
@@ -24,8 +24,8 @@ class Task(models.Model):
         (2, 'Important')
     )
 
-    task_id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(User)
+    # task_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User)
     name = models.CharField(max_length=80)
     description = models.TextField(max_length=2000)
     priority = models.PositiveSmallIntegerField(default=1, choices=PRIORITIES)
@@ -33,7 +33,7 @@ class Task(models.Model):
     date_modified = models.DateTimeField(auto_now=True, blank=True)
     date_from = models.DateTimeField()
     date_to = models.DateTimeField()
-    repeat = models.PositiveSmallIntegerField(choices=CHOICES)
+    repeat = models.PositiveSmallIntegerField(choices=REPEAT)
     repeat_days = models.PositiveSmallIntegerField(default=0)
     lat = models.DecimalField(max_digits=8, decimal_places=6, blank=True, null=True)
     lng = models.DecimalField(max_digits=8, decimal_places=6, blank=True, null=True)
@@ -42,7 +42,7 @@ class Task(models.Model):
     status = models.PositiveSmallIntegerField(default=1, choices=STATUSES)
 
     def __str__(self):
-        return "Task ID: " + str(self.task_id)
+        return "Task ID: " + str(self.id)
 
 
 class TaskFile(models.Model):
@@ -54,8 +54,8 @@ class TaskFile(models.Model):
         (3, 'Video')
     )
 
-    task_file_id = models.AutoField(primary_key=True)
-    task_id = models.ForeignKey(Task)
+    # task_file_id = models.AutoField(primary_key=True)
+    task = models.ForeignKey(Task)
     file = models.FileField()
     type = models.PositiveSmallIntegerField(default=0, choices=TYPES)
     size = models.IntegerField()
@@ -64,7 +64,7 @@ class TaskFile(models.Model):
     status = models.BooleanField(default=True, blank=True)
 
     def __str__(self):
-        return "File ID: " + str(self.task_file_id)
+        return "File ID: " + str(self.id)
 
 
 class TaskLog(models.Model):
@@ -74,11 +74,11 @@ class TaskLog(models.Model):
         (True, 'Active')
     )
 
-    task_log_id = models.AutoField(primary_key=True)
-    task_id = models.ForeignKey(Task)
+    # task_log_id = models.AutoField(primary_key=True)
+    task = models.ForeignKey(Task)
     description = models.TextField(max_length=1000)
     date_created = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(default=True, choices=STATUSES)
 
     def __str__(self):
-        return "Log ID: " + str(self.task_log_id)
+        return "Log ID: " + str(self.id)

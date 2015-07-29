@@ -11,6 +11,9 @@ var Utils = (function(){
             } else {
                 return text;
             }
+        },
+        roundCoord: function(coord){
+            return Number(coord).toFixed(6);
         }
     }
 
