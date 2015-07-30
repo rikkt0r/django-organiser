@@ -6,10 +6,14 @@
 
     <div class="content-block">
 
+        {% if username %}
+        <h2>{{username}}'s tasks</h2>
+        {% else %}
         <h2>Your tasks</h2>
+        {% endif %}
 
         <div class="row">
-                <table class="dataTable bg-white fg-dark table striped hovered align-left" data-role="datatable" data-searching="true">
+                <table class="dataTable bg-white fg-dark table striped hovered align-left" data-role="datatable" data-searching="true" data-ordering="true" data-paging="false" data-info="false">
                   <thead>
                     <tr>
                       <!--<th>Countdown</th>-->
@@ -28,7 +32,7 @@
                           <!--<div data-days="2" data-role="countdown" class="countdown"></div>-->
                       <!--</td>-->
                       <td>{{ task.date_to|date:"Y-m-d h:m A" }}</td>
-                      <td><a href="{% url 'tasks_edit' task_id=task.id%}">{{task.name}}</a></td>
+                      <td><a href="{% url 'tasks:task' task_id=task.id%}">{{task.name}}</a></td>
                       <td>-</td>
                       <td>
                           {% if task.priority == 1 %}

@@ -14,14 +14,10 @@
 
         {% if form.errors %}
             <hr/>
-            <hr/>
+            <h4 class="align-left">Errors:</h4>
             {{ form.errors }}
             <hr/>
-            <hr/>
         {% endif %}
-
-        <!--<div data-role="preloader" data-type="ring"></div>-->
-        <!--<div data-role="preloader" data-type="ring" data-style="dark"></div>-->
 
             <form method="POST" role="form" class="align-left">
                 <div class="grid">
@@ -39,7 +35,7 @@
 
                     <div class="row">
                         <label for="{{ form.name.id_for_label }}" class="text-bold">{{ form.name.label }}</label>
-                        <div class="input-control text full-size">
+                        <div class="input-control text full-size {% if form.name.errors %}warning{% endif %}">
                             {{ form.name }}
                         </div>
                     </div>
@@ -47,7 +43,7 @@
                     <div class="row cells2">
                         <div class="cell">
                             <label for="{{ form.date_from.id_for_label }}" class="text-bold">{{ form.date_from.label }}</label>
-                            <div class="input-control text full-size">
+                            <div class="input-control text full-size {% if form.date_from.errors %}warning{% endif %}">
                                 <span class="mif-calendar prepend-icon"></span>
                                 {{ form.date_from }}
                             </div>
@@ -55,7 +51,7 @@
 
                         <div class="cell">
                             <label for="{{ form.date_to.id_for_label }}" class="text-bold">{{ form.date_to.label }}</label>
-                            <div class="input-control text full-size">
+                            <div class="input-control text full-size {% if form.date_to.errors %}warning{% endif %}">
                                 <span class="mif-calendar prepend-icon"></span>
                                 {{ form.date_to }}
                             </div>
@@ -65,7 +61,7 @@
                     <div class="row cells2">
                         <div class="cell">
                             <label for="{{form.repeat.id_for_label}}" class="text-bold">{{form.repeat.label}}</label>
-                            <div class="input-control select full-size">
+                            <div class="input-control select full-size {% if form.repeat.errors %}warning{% endif %}">
                             <!--<div class="input-control select" data-role="select">-->
                                 {{ form.repeat }}
                             </div>
@@ -74,7 +70,7 @@
 
                         <div class="cell">
                             <label for="{{ form.repeat_days.id_for_label }}" class="text-bold">{{ form.repeat_days.label }}</label>
-                            <div class="input-control number full-size">
+                            <div class="input-control number full-size {% if form.repeat_days.errors %}warning{% endif %}">
                                 {{ form.repeat_days }}
                             </div>
                         </div>
@@ -103,7 +99,7 @@
 
                     <div class="row">
                         <label for="{{ form.description.id_for_label }}" class="text-bold">{{ form.description.label }}</label>
-                        <div class="input-control textarea full-size">
+                        <div class="input-control textarea full-size {% if form.description.errors %}warning{% endif %}">
                             {{ form.description }}
                         </div>
                     </div>
@@ -133,7 +129,7 @@
 
                         <div class="row">
                             <label for="{{ form.place_desc.id_for_label }}" class="text-bold">{{ form.place_desc.label }}</label>
-                            <div class="input-control text full-size">
+                            <div class="input-control text full-size {% if form.place_desc.errors %}warning{% endif %}">
                                 {{ form.place_desc }}
                             </div>
                         </div>

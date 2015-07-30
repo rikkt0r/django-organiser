@@ -85,6 +85,12 @@ LOGIN_REDIRECT_URL = '/users/'
 LOGIN_URL = '/users/login/'
 LOGOUT_URL = '/users/logout/'
 
+# DATE_FORMAT = 'Y/m/d'
+# DATETIME_FORMAT = 'Y/m/d H:i'
+# DATETIME_INPUT_FORMATS = [
+#     '%Y/%m/%d %H:%M'
+# ]
+
 WSGI_APPLICATION = 'app.wsgi.application'
 
 

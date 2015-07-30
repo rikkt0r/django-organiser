@@ -4,8 +4,70 @@
 
 {% block content %}
 
-    <div class="jumbotron">
-        <h2>Tasks show task..</h2>
+    <div class="content-block">
+        <h1>Task view,</h1>
+        <h3>{{task.name}}</h3>
+
+            <div class="grid">
+
+                <div class="row">
+                    {% if is_author %}
+                        <button class="button success" type="button" onclick="window.location='{% url 'tasks:tasks_edit' task_id=task.id%}'">Edit this task</button>
+                        {% if task.public %} THIS TASK IS PUBLICLY VIEWABLE{% endif %}
+                    {% endif %}
+                </div>
+
+                <div class="row">
+                    From: {{ task.date_from }} To: {{ task.date_to }} {% if task.repeat %} (Repeated) {% endif %}
+                    Priority: <span class="mif-magic-wand mif-2x"></span>
+                </div>
+
+                <div class="row cells3">
+
+                    <div class="cell">
+                        <button class="button map-user-location" onclick="map.userLocation()" type="button"><span class="fg-blue mif-vpn-lock mif-2x"></span> Your location</button>
+                        <button class="button map-user-location" onclick="map.userChooseLocation(1,2)" type="button"><span class="fg-blue mif-vpn-lock mif-2x"></span> Task location</button>
+                    </div>
+
+                    <div class="cell">
+                        {{ task.lat }} / {{ task.lng }} <br />
+                        {{ task.place_desc }}
+                    </div>
+
+                    <div class="cell">
+                        <div id="map" class="fg-dark" style="height: 220px;"></div>
+                    </div>
+                </div>
+
+                <div class="row example fg-dark">
+                    {{ task.description|safe }}
+                </div>
+
+                <div class="row align-left">
+                    <h5>Task files:</h5>
+                    <ol class="numeric-list square-marker fg-white">
+                        <li>abc.pdf (1024kb)</li>
+                        <li>def.pdf (1024kb)</li>
+                        <li>abc.pdf (1024kb)</li>
+                        <li>abc.pdf (1024kb)</li>
+                        <li>abc.pdf (1024kb)</li>
+                        <li>abc.pdf (1024kb)</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
     </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/js/_map.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            map.init();
+        });
+    </script>
 
 {% endblock %}

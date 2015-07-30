@@ -16,6 +16,14 @@ footer .grid .cell a:hover {color: inherit;text-decoration: underline;}
     margin: 0 auto;
 }
 
+.errorlist {
+    text-align: left;
+}
+
+.preloader-ring {height: 100px;width: 100px;}
+.preloader-ring .wrap {height: 100px;width: 100px;}
+.preloader-ring .wrap .circle {height: 100px;width: 100px;}
+
 /* -------------------- LOGIN FORM ------------------- */
 
 .login-form {

@@ -25,7 +25,7 @@ var map = (function(L, $) {
     var CustomIcon = L.Icon.extend({
         options: {
             shadowUrl: '/static/images/leaflet/marker-shadow.png',
-            shadowAnchor: [1, 41],
+            shadowAnchor: [13, 41],
             iconSize: [25, 41],
             iconAnchor: [12, 41],
             popupAnchor: [1, -34],
@@ -33,7 +33,8 @@ var map = (function(L, $) {
         }
     });
 
-    var blackIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-black.png'}),
+    var greenIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-green.png'}),
+        greyIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-grey.png'}),
         redIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-red.png'}),
         yellowIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-yellow.png'}),
         blueIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-blue.png'}),
@@ -181,19 +182,19 @@ var map = (function(L, $) {
                     switch(points[i].priority) {
 
                         case 1:
-                            var marker = L.marker([points[i].lat, points[i].lng], {icon: yellowIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
+                            var marker = L.marker([points[i].lat, points[i].lng], {icon: greenIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
                             marker.task_id = points[i].id;
                             group.push(marker);
                             break;
 
                         case 2:
-                            var marker = L.marker([points[i].lat, points[i].lng], {icon: redIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
+                            var marker = L.marker([points[i].lat, points[i].lng], {icon: yellowIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
                             marker.task_id = points[i].id;
                             group.push(marker);
                             break;
 
                         case 3:
-                            var marker = L.marker([points[i].lat, points[i].lng], {icon: blackIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
+                            var marker = L.marker([points[i].lat, points[i].lng], {icon: redIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
                             marker.task_id = points[i].id;
                             group.push(marker);
                             break;

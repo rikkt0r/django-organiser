@@ -4,8 +4,8 @@ from django.forms.widgets import Textarea, Select, TextInput, DateTimeInput, \
     NumberInput, HiddenInput, CheckboxInput
 
 
-# Yeah, i know model form might be suitable..
-# but i'm learning django, so yeah..
+# Yeah, i know modelForm might be suitable..
+# but i'm learning django, so yeah.. let it be for now
 class TaskForm(forms.Form):
 
     REPEAT = (
@@ -56,14 +56,14 @@ class TaskForm(forms.Form):
     date_from = DateTimeField(
         widget=DateTimeInput(attrs={'placeholder': 'Choose date'}),
         label="Date From",
-        input_formats=['%Y/%m/%d %H:%M']
+        input_formats=['%Y/%m/%d %H:%M', '%Y-%m-%d %H:%M:%S']
         # or just leave for default https://docs.djangoproject.com/en/1.8/ref/forms/fields/#datetimefield
     )
 
     date_to = DateTimeField(
         widget=DateTimeInput(attrs={'placeholder': 'Choose date'}),
         label="Date To",
-        input_formats=['%Y/%m/%d %H:%M']
+        input_formats=['%Y/%m/%d %H:%M', '%Y-%m-%d %H:%M:%S']
         # or just leave for default https://docs.djangoproject.com/en/1.8/ref/forms/fields/#datetimefield
     )
 
@@ -76,7 +76,7 @@ class TaskForm(forms.Form):
 
     repeat_days = IntegerField(
         widget=NumberInput(),
-        label="Repeat days (when chosen repeat custom)",
+        label="Repeat days (when chosen other)",
         min_value=1,
         max_value=60,
         initial=1,
