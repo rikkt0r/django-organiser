@@ -21,6 +21,10 @@
                 <div class="row cells2">
 
                     <div class="cell">
+                        <h5 class="align-left">
+                            <b>From:</b> {{ task.date_from|date:'g:i, j b o (l)' }} <br/><b>To:</b> {{ task.date_to|date:'g:i, j b o (l)' }}
+                            {% if task.repeat %} <span style="text-decoration: underline;">(Repeated)</span> {% endif %}
+                        </h5>
                         {{ task.place_desc }}
                     </div>
 
@@ -31,10 +35,7 @@
                     </div>
                 </div>
 
-                <h5 class="align-left">
-                    <b>From:</b> {{ task.date_from|date:'g:i, j b o (l)' }} <br/><b>To:</b> {{ task.date_to|date:'g:i, j b o (l)' }}
-                    {% if task.repeat %} <span style="text-decoration: underline;">(Repeated)</span> {% endif %}
-                </h5>
+
                 <div class="row example fg-dark align-left">
                     {{ task.description|safe }}
                 </div>

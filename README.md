@@ -10,14 +10,13 @@ Domains:
 * little-organiser.com
 * my-little-organiser.com
 
-## What currently works/exists:
+## WTF
 
-* Whole ORM done nicely
-* Integrated with django auth engine
-* Custom auth backend: login by mail or username
-* Permission works (simple, for now.. later gonna use build in django stuff)
-* Created every possible template and view (now... fill them up)
-
+* Simple system for managing daily tasks (bonus: map view).
+* Django, Leaflet, DataTables, MetroUI.
+* No user tracking.
+* Ajax avoided like fire. No real reason. Just wanted it to work this way.
+* Next project will be SPA@REST
 
 ## Url structure
 
@@ -29,22 +28,19 @@ Domains:
 │   ├── agreement
 │   ├── support
 │   ├── faq
-├── /lists
-│   ├── /<int: page_id>, default = 1
-│   ├── /<str: username>
-│   └── /search/<str: username>
+├── /user
+│   └── /<str: username>
 ├── /users
 │   ├── /
 │   ├── /logout
-│   ├── /passwd
-│   └── /login
+│   ├── /login
+│   ├── /settings
+│   └── /passwd
 └── /tasks
-    ├── /<int: page_id>, default = 1
-    ├── /history/<int: page_id>, default = 1
+    ├── /
+    ├── /history/ not implemented yet.
     ├── /map
     ├── /new
-    ├── /edit/<int: task_id>
-    └── /task
-        ├── / (redirect to /tasks/)
-        └── /<int: task_id>
+    ├── /<int: task_id>/
+    └── /<int: task_id>/edit/
 ```

@@ -7,5 +7,6 @@ urlpatterns = [
     # url(r'^login$', 'django.contrib.auth.views.login', name='login'),
     url(r'^login/$', views.users_login, name='login'),
     url(r'^logout/$', views.users_logout, name='logout'),
-    url(r'^passwd/$', views.users_passwd, name='passwd')
+    url(r'^passwd/$', views.users_passwd, name='passwd'),
+    url(r'^settings/$', views.users_settings, name='settings')
 ]

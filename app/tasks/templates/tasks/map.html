@@ -6,7 +6,9 @@
 
     <div class="content-block">
 
-        <h2>Your tasks on map</h2>
+
+        <h1>Your tasks on map</h1>
+        <h3>(Only the ones with location set)</h3>
        <!--<div data-role="preloader" data-type="ring"></div>-->
         <!--<div data-role="preloader" data-type="ring" data-style="dark"></div>-->
 
@@ -19,72 +21,15 @@
                         <tr>
                             <th>Due</th>
                             <th>Task</th>
-                            <th>Due</th>
-                            <th>Task</th>
                         </tr>
                         </thead>
                         <tbody>
+                        {% for task in tasks %}
                         <tr>
-                            <td data-taskid="1"><span class="tag info">2 days</span></td>
-                            <td data-taskid="1">Lorem ipsum dolor sit amet</td>
-                            <td data-taskid="2"><span class="tag info">2 days</span></td>
-                            <td data-taskid="2">Lorem ipsum dolor sit amet</td>
+                            <td data-taskid="{{task.id}}"><span class="tag info">{{ task.date_from|date:"Y-m-d" }}</span></td>
+                            <td data-taskid="{{task.id}}">{{task.name}}</td>
                         </tr>
-                        <tr>
-                            <td data-taskid="3"><span class="tag info">2 days</span></td>
-                            <td data-taskid="3">Lorem ipsum dolor sit amet</td>
-                            <td data-taskid="4"><span class="tag info">2 days</span></td>
-                            <td data-taskid="4">Lorem ipsum dolor sit amet</td>
-                        </tr>
-                        <tr>
-                            <td data-taskid="6"><span class="tag info">2 days</span></td>
-                            <td data-taskid="6">Lorem ipsum dolor sit amet</td>
-                            <td data-taskid="2"><span class="tag info">2 days</span></td>
-                            <td data-taskid="2">Lorem ipsum dolor sit amet</td>
-                        </tr>
-                        <tr>
-                            <td data-taskid="5"><span class="tag info">2 days</span></td>
-                            <td data-taskid="5">Lorem ipsum dolor sit amet</td>
-                            <td data-taskid="4"><span class="tag info">2 days</span></td>
-                            <td data-taskid="4">Lorem ipsum dolor sit amet</td>
-                        </tr>
-                        <tr>
-                            <td data-taskid="3"><span class="tag info">2 days</span></td>
-                            <td data-taskid="3">Lorem ipsum dolor sit amet</td>
-                            <td data-taskid="5"><span class="tag info">2 days</span></td>
-                            <td data-taskid="5">Lorem ipsum dolor sit amet</td>
-                        </tr>
-                        <tr>
-                            <td data-taskid="5"><span class="tag info">2 days</span></td>
-                            <td data-taskid="5">Lorem ipsum dolor sit amet</td>
-                            <td data-taskid="1"><span class="tag info">2 days</span></td>
-                            <td data-taskid="1">Lorem ipsum dolor sit amet</td>
-                        </tr>
-                        <tr>
-                            <td data-taskid="2"><span class="tag info">2 days</span></td>
-                            <td data-taskid="2">Lorem ipsum dolor sit amet</td>
-                            <td data-taskid="4"><span class="tag info">2 days</span></td>
-                            <td data-taskid="4">Lorem ipsum dolor sit amet</td>
-                        </tr>
-                        <tr>
-                            <td data-taskid="3"><span class="tag info">2 days</span></td>
-                            <td data-taskid="3">Lorem ipsum dolor sit amet</td>
-                            <td data-taskid="5"><span class="tag info">2 days</span></td>
-                            <td data-taskid="5">Lorem ipsum dolor sit amet</td>
-                        </tr>
-                        <tr>
-                            <td data-taskid="2"><span class="tag info">2 days</span></td>
-                            <td data-taskid="2">Lorem ipsum dolor sit amet</td>
-                            <td data-taskid="3"><span class="tag info">2 days</span></td>
-                            <td data-taskid="3">Lorem ipsum dolor sit amet</td>
-                        </tr>
-                        <tr>
-                            <td data-taskid="1"><span class="tag info">2 days</span></td>
-                            <td data-taskid="1">Lorem ipsum dolor sit amet</td>
-                            <td data-taskid="2"><span class="tag info">2 days</span></td>
-                            <td data-taskid="2">Lorem ipsum dolor sit amet</td>
-                        </tr>
-
+                        {% endfor %}
 
                         </tbody>
                     </table>
@@ -120,7 +65,8 @@
     }
 
     $(document).ready(function(){
-        map.init(true);
+        map.init();
+        map.setData({{tasks_json|safe}}); // DUH, SO MUCH HAX to avoid ajax.
         map.repopulate();
 
         $('#map-task-table').find('td').click(function(){

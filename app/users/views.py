@@ -58,3 +58,7 @@ def users_logout(request):
 def users_passwd(request):
     return render(request, "users/passwd.html")
 
+
+def users_settings(request):
+    return render(request, "users/settings.html")
+

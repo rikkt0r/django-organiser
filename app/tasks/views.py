@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse, Http404
 from django.views.decorators.cache import cache_page
+import json
 
 from .forms import TaskForm
 from .models import Task
@@ -64,7 +65,29 @@ def tasks_task(request, task_id):
 
 @login_required
 def tasks_map(request):
-    return render(request, "tasks/map.html")
+
+    tasks = Task.objects.exclude(lat__isnull=True, lng__isnull=True).filter(user_id=request.user.id)
+
+    # YEAH, coz i'm tired right now..
+    # ss - shit serializer
+    def ss(task):
+        return {
+            'id': task.id,
+            'name': task.name,
+            'lat': str(task.lat),
+            'lng': str(task.lng),
+            'priority': task.priority
+        }
+
+    return render(request, "tasks/map.html", context={
+        'tasks': tasks,
+        'tasks_json': json.dumps([ss(i) for i in tasks])
+    })
+
+# @login_required
+# def tasks_map_json(request):
+#     pass
+#
 
 
 @login_required

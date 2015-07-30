@@ -17,7 +17,8 @@ var map = (function(L, $) {
         movableMarker = undefined,
         singleTask = undefined,
         userLat=Number.NaN,
-        userLng=Number.NaN;
+        userLng=Number.NaN,
+        repopulatedByPriority = false;
 
     var CustomIcon = L.Icon.extend({
         options: {
@@ -257,7 +258,7 @@ var map = (function(L, $) {
                                                             Public functions
        \-------------------------------------------------------------------------------------------------------------------------------------/ */
 
-    function getData(markers){
+    function setData(markers){
         __setMarkers(markers);
     }
 
@@ -266,7 +267,13 @@ var map = (function(L, $) {
     }
 
     function repopulatePriority() {
-        __repopulate(false, true);
+        if(repopulatedByPriority){
+            __repopulate(false, false);
+            repopulatedByPriority = false;
+        } else {
+            __repopulate(false, true);
+            repopulatedByPriority = true;
+        }
     }
 
     function repopulateClassic() {
@@ -302,7 +309,7 @@ var map = (function(L, $) {
 
     return {
         init: init,
-        getData: getData,
+        setData: setData,
         repopulate: repopulateClassic,
         repopulatePriority: repopulatePriority,
         repopulateUrgent: repopulateUrgent,
