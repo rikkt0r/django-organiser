@@ -68,7 +68,7 @@
 
                         </div>
 
-                        <div class="cell">
+                        <div class="cell toggle-by-repeat" style="display: none;">
                             <label for="{{ form.repeat_days.id_for_label }}" class="text-bold">{{ form.repeat_days.label }}</label>
                             <div class="input-control number full-size {% if form.repeat_days.errors %}warning{% endif %}">
                                 {{ form.repeat_days }}
@@ -121,9 +121,8 @@
 
                         <div class="row">
                             <button class="button map-user-location" onclick="map.userLocation()" type="button"><span class="fg-blue mif-vpn-lock mif-2x"></span> Your location</button>
-                            <button class="button map-user-location" onclick="map.userChooseLocation(1,2)" type="button"><span class="fg-blue mif-vpn-lock mif-2x"></span> Select task location</button>
 
-                            Move pin on map
+                            Click map to add pin, then move it to your chosen location
 
                         </div>
 
@@ -135,7 +134,7 @@
                         </div>
 
                         <div class="row">
-                            <div id="map" class="fg-dark" style="height: 200px;"></div>
+                            <div id="map" class="fg-dark" style="height: 250px;"></div>
                         </div>
                     </div>
 
@@ -196,15 +195,20 @@
 
             $('#id_repeat').change(function(){
                 if($(this).val() == 8) {
-                    $('#id_repeat_days').prop('disabled', false);
+                    $('.toggle-by-repeat').css('display', 'inline-block');
                 } else {
-                    $('#id_repeat_days').prop('disabled', true);
+                    $('.toggle-by-repeat').css('display', 'none');
                 }
             });
 
             // MAP =================================
 
             map.init();
+            {% if edit_task and form.lat.value and form.lng.value %}
+                map.registerCreationEvents('#id_lat', '#id_lng', {{form.lat.value}}, {{form.lng.value}});
+            {% else %}
+                map.registerCreationEvents('#id_lat', '#id_lng', false, false);
+            {% endif %}
 
         });
     </script>

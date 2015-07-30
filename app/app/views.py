@@ -1,9 +1,9 @@
-from django.views.generic import TemplateView
+from django.shortcuts import render
 
 
-class Template404View(TemplateView):
-    template_name = "error_404.html"
+def error404(request):
+    return render(request, "404.html", status=404)
 
 
-class Template500View(TemplateView):
-    template_name = "error_500.html"
+def error500(request):
+    return render(request, "500.html", status=500)

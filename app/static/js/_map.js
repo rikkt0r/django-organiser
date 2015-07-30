@@ -8,17 +8,14 @@ TODO
 
  */
 var map = (function(L, $) {
-    var ACCESS_TOKEN = 'pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ',
-        MB_ATTR = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        MB_URL = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + ACCESS_TOKEN,
-        OSM_URL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        OSM_ATTRIB = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    var OpenMapSurfer_Roads = L.tileLayer('http://openmapsurfer.uni-hd.de/tiles/roads/x={x}&y={y}&z={z}', {
+	        maxZoom: 16,
+	        attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }),
         _map,
         pointLayer,
-        movablePinAdded = false,
-        popup=L.popup(),
+        movableMarker = undefined,
+        singleTask = undefined,
         userLat=Number.NaN,
         userLng=Number.NaN;
 
@@ -31,10 +28,9 @@ var map = (function(L, $) {
             popupAnchor: [1, -34],
             shadowSize: [41, 41]
         }
-    });
-
-    var greenIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-green.png'}),
-        greyIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-grey.png'}),
+    }),
+        greenIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-green.png'}),
+        purpleIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-purple.png'}),
         redIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-red.png'}),
         yellowIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-yellow.png'}),
         blueIcon = new CustomIcon({iconUrl: '/static/images/leaflet/marker-blue.png'}),
@@ -55,44 +51,31 @@ var map = (function(L, $) {
 
 
     function __geoSuccess(e) {
-        console.log([userLat, userLng]);
 
+        userLat = e.latlng.lat;
+        userLng = e.latlng.lng;
+        console.log([userLat, userLng]);
         L.marker(e.latlng, {icon: userIcon}).addTo(_map).bindPopup("<b>You are here</b><br/> or " + e.accuracy / 2 + "m away").openPopup();
     }
 
     function __geoError(e) {
         console.log('[error] getting coordinates :< USER, WHY U NO ACCEPT. ' + e.message);
+        alert('USER, WHY U NO ACCEPT :<');
+    }
+
+    function __setMarkers(markers){
+        points = markers;
     }
 
     function init() {
-
         _map = L.map('map');
         _map.on('locationfound', __geoSuccess);
         _map.on('locationerror', __geoError);
-        //_map.on('click', onMapClick);
 
-        L.tileLayer(MB_URL, {
-            attribution: OSM_ATTRIB,
-            id: 'mapbox.streets',
-            maxZoom: 15
-        }).addTo(_map);
-
+        OpenMapSurfer_Roads.addTo(_map);
         _map.locate({setView: true, maxZoom: 14});
     }
 
-
-    function __addMovableMarker(callback_fn) {
-        if (!movablePinAdded) {
-            L.marker(_map.getCenter(), {'draggable': true}).on('dragend', function (evt) {
-                var coords = evt.target.getLatLng();
-                console.log(coords);
-                $('#id_lat').val(Utils.roundCoord(coords['lat']));
-                $('#id_lng').val(Utils.roundCoord(coords['lng']));
-            }).addTo(_map);
-
-            movablePinAdded = true;
-        }
-    }
 
     function __centerMap(return_center) {
         var maxLat=Number.NEGATIVE_INFINITY,
@@ -117,11 +100,35 @@ var map = (function(L, $) {
         }
     }
 
-    function onMapClick(e) {
-        popup
-            .setLatLng(e.latlng)
-            .setContent("You clicked the map at " + e.latlng.toString())
-            .openOn(_map);
+    function __generateMovableMarker($h_lat, $h_lng, lat, lng){
+        return L.marker([lat, lng], {'draggable': true}).bindPopup('Here')
+            .on('dragend', function (evt) {
+                var coords = evt.target.getLatLng();
+                //console.log(coords);
+                $($h_lat).val(Utils.roundCoord(coords['lat']));
+                $($h_lng).val(Utils.roundCoord(coords['lng']));
+                this.openPopup();
+            })
+            .addTo(_map);
+    }
+
+    function __enableCoordChoice($h_lat, $h_lng, lat, lng) {
+
+        if(!movableMarker && lat && lng){
+            movableMarker = __generateMovableMarker($h_lat, $h_lng, lat, lng).openPopup();
+        }
+
+        _map.on('click', function(e) {
+            //popup.setLatLng(e.latlng).setContent("You clicked the map at " + e.latlng.toString()).openOn(_map);
+            if (!movableMarker) {
+                movableMarker = __generateMovableMarker($h_lat, $h_lng, e.latlng.lat, e.latlng.lng).openPopup();
+
+                $($h_lat).val(Utils.roundCoord(e.latlng['lat']));
+                $($h_lng).val(Utils.roundCoord(e.latlng['lng']));
+            } else {
+                movableMarker.setLatLng(e.latlng).openPopup();
+            }
+        });
     }
 
     function panToTask(task_id) {
@@ -148,8 +155,6 @@ var map = (function(L, $) {
     }
 
 
-
-
     function userCheckLocation(){
         return userLat && userLng;
     }
@@ -160,8 +165,23 @@ var map = (function(L, $) {
         }
     }
 
-    function __preparePopup(id, title, dateDue) {
-        return '<b>Due: ' + dateDue + '</b><br/><hr class="thin"><span>' + Utils.cutToLength(title, 16) + '</span><br/><a class="place-left" href="#map" onclick="showTask(' + id + ')">&raquo; more</a> ';
+    function __preparePopup(id, title, dateDue, $fnName) {
+        //return '<b>Due: ' + dateDue + '</b><br/><hr class="thin"><span>' + Utils.cutToLength(title, 16) + '</span><br/><a class="place-left" href="#map" onclick="showTask(' + id + ')">&raquo; more</a> ';
+        return '<b>Due: ' + dateDue + '</b><br/><hr class="thin"><span>' + Utils.cutToLength(title, 16) + '</span><br/><a class="place-left" href="/tasks/' + id + '/">&raquo; more</a> ';
+    }
+
+    function __preparePopupLite() {
+        return '<b>Your destination</b>';
+    }
+
+    function __panToCoordinates(lat, lng) {
+        _map.panTo([lat, lng]);
+    }
+
+    function __markAndPan(lat, lng){
+        if(!singleTask){
+            singleTask = L.marker([lat, lng]).bindPopup(__preparePopupLite()).addTo(_map).openPopup();
+        }
     }
 
     function __repopulate(urgent, priority){
@@ -179,28 +199,30 @@ var map = (function(L, $) {
             if(priority) {
                 for(var i=0; i<points.length;i++) {
 
+                    var marker;
+
                     switch(points[i].priority) {
 
                         case 1:
-                            var marker = L.marker([points[i].lat, points[i].lng], {icon: greenIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
+                            marker = L.marker([points[i].lat, points[i].lng], {icon: greenIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
                             marker.task_id = points[i].id;
                             group.push(marker);
                             break;
 
                         case 2:
-                            var marker = L.marker([points[i].lat, points[i].lng], {icon: yellowIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
+                            marker = L.marker([points[i].lat, points[i].lng], {icon: yellowIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
                             marker.task_id = points[i].id;
                             group.push(marker);
                             break;
 
                         case 3:
-                            var marker = L.marker([points[i].lat, points[i].lng], {icon: redIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
+                            marker = L.marker([points[i].lat, points[i].lng], {icon: redIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
                             marker.task_id = points[i].id;
                             group.push(marker);
                             break;
 
                         default:
-                            var marker = L.marker([points[i].lat, points[i].lng]).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
+                            marker = L.marker([points[i].lat, points[i].lng]).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
                             marker.task_id = points[i].id;
                             group.push(marker);
                             break;
@@ -208,12 +230,13 @@ var map = (function(L, $) {
 
                 }
             } else if (urgent) {
-                for(var i=0; i<points.length;i++)
+                for(var i=0; i<points.length;i++) {
                     if(points[i].priority == 2) {
                         var marker = L.marker([points[i].lat, points[i].lng], {icon: redIcon}).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
                         marker.task_id = points[i].id;
                         group.push(marker);
                     }
+                }
             } else {
                 for (var i = 0; i < points.length; i++) {
                     var marker = L.marker([points[i].lat, points[i].lng]).bindPopup(__preparePopup(points[i].id, points[i].name, points[i].dateDue));
@@ -234,6 +257,10 @@ var map = (function(L, $) {
                                                             Public functions
        \-------------------------------------------------------------------------------------------------------------------------------------/ */
 
+    function getData(markers){
+        __setMarkers(markers);
+    }
+
     function repopulateUrgent() {
         __repopulate(true, false);
     }
@@ -250,20 +277,43 @@ var map = (function(L, $) {
         __centerMap(false);
     }
 
-    function userChooseLocation($handler_lat, $handler_lng) {
-        __addMovableMarker('aa');
+    function panToCoords(lat, lng) {
+        __panToCoordinates(lat, lng);
+    }
+
+    function addSingleTask(lat, lng){
+        __markAndPan(lat, lng);
+    }
+
+    function singleTaskLocation() {
+        if(singleTask){
+            __panToCoordinates(singleTask._latlng.lat, singleTask._latlng.lng);
+        }
+    }
+
+    function registerCreationEvents($handler_lat, $handler_lng, lat, lng){
+        __enableCoordChoice($handler_lat, $handler_lng, lat, lng);
+        // and more if needed
+    }
+
+    function initMovableMarkerFromLatLng(){
+        __setMovableMarker();
     }
 
     return {
         init: init,
+        getData: getData,
         repopulate: repopulateClassic,
         repopulatePriority: repopulatePriority,
         repopulateUrgent: repopulateUrgent,
         center: center,
+        panToCoords: panToCoords,
         panToTask: panToTask,
+        addSingleTask: addSingleTask,
+        singleTaskLocation: singleTaskLocation,
+        registerCreationEvents: registerCreationEvents,
         userLocation: userLocation,
         userCheckLocation: userCheckLocation,
-        userChooseLocation: userChooseLocation,
         DEBUG: function(){return _map}
     }
 

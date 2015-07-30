@@ -3,10 +3,8 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from .views import Template404View, Template500View
-
-handler404 = Template404View.as_view()
-handler500 = Template500View.as_view()
+handler404 = 'app.views.error404'
+handler500 = 'app.views.error500'
 
 urlpatterns = [
     url(r'^$', 'tasks.views.index', name='index'),

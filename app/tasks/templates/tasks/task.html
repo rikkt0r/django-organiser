@@ -13,33 +13,29 @@
                 <div class="row">
                     {% if is_author %}
                         <button class="button success" type="button" onclick="window.location='{% url 'tasks:tasks_edit' task_id=task.id%}'">Edit this task</button>
-                        {% if task.public %} THIS TASK IS PUBLICLY VIEWABLE{% endif %}
+                        {% if task.public %} This task is PUBLIC <span class="mif-eye mif-2x"></span>{% endif %}
                     {% endif %}
                 </div>
 
-                <div class="row">
-                    From: {{ task.date_from }} To: {{ task.date_to }} {% if task.repeat %} (Repeated) {% endif %}
-                    Priority: <span class="mif-magic-wand mif-2x"></span>
-                </div>
 
-                <div class="row cells3">
+                <div class="row cells2">
 
                     <div class="cell">
-                        <button class="button map-user-location" onclick="map.userLocation()" type="button"><span class="fg-blue mif-vpn-lock mif-2x"></span> Your location</button>
-                        <button class="button map-user-location" onclick="map.userChooseLocation(1,2)" type="button"><span class="fg-blue mif-vpn-lock mif-2x"></span> Task location</button>
-                    </div>
-
-                    <div class="cell">
-                        {{ task.lat }} / {{ task.lng }} <br />
                         {{ task.place_desc }}
                     </div>
 
                     <div class="cell">
+                        <button class="button map-user-location" onclick="map.userLocation()" type="button"><span class="fg-blue mif-vpn-lock mif-2x"></span> Your location</button>
+                        <button class="button map-user-location" onclick="map.singleTaskLocation()" type="button"><span class="fg-blue mif-vpn-lock mif-2x"></span> Task location</button><br/>
                         <div id="map" class="fg-dark" style="height: 220px;"></div>
                     </div>
                 </div>
 
-                <div class="row example fg-dark">
+                <h5 class="align-left">
+                    <b>From:</b> {{ task.date_from|date:'g:i, j b o (l)' }} <br/><b>To:</b> {{ task.date_to|date:'g:i, j b o (l)' }}
+                    {% if task.repeat %} <span style="text-decoration: underline;">(Repeated)</span> {% endif %}
+                </h5>
+                <div class="row example fg-dark align-left">
                     {{ task.description|safe }}
                 </div>
 
@@ -67,6 +63,9 @@
     <script>
         $(document).ready(function(){
             map.init();
+            window.setTimeout(function(){
+                map.addSingleTask( {{task.lat}} , {{task.lng}} );
+            }, 2000);
         });
     </script>
 

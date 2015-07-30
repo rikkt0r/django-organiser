@@ -43,7 +43,6 @@ def tasks_index(request):
     })
 
 
-@login_required
 def tasks_task(request, task_id):
 
     task = get_object_or_404(Task, pk=task_id)
