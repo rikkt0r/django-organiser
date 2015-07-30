@@ -34,7 +34,7 @@
                       <td>{{ task.date_to|date:"Y-m-d h:m A" }}</td>
                       <td><a href="{% url 'tasks:task' task_id=task.id%}">{{task.name}}</a></td>
                       <td>-</td>
-                      <td>
+                      <td data-order="{{task.priority}}">
                           {% if task.priority == 1 %}
                             <span class="fg-blue mif-hour-glass"></span></td>
                           {% elif task.priority == 2 %}
@@ -43,7 +43,7 @@
                             <span class="fg-blue mif-magic-wand"></span>
                           {% endif %}
 
-                      <td>
+                      <td data-order="{{task.public}}">
                           {% if task.public %}
                             <span class="fg-blue mif-checkmark"></span></td>
                           {% else %}
