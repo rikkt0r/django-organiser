@@ -1,12 +1,16 @@
+# -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse, HttpResponse, Http404
-from django.views.decorators.cache import cache_page
+from django.http import Http404
+# from django.views.decorators.cache import cache_page
 import json
+from django.views.decorators.http import require_POST
 
-from .forms import TaskForm
-from .models import Task
+from .services import determine_file_type, require_task_ownership
+from .forms import TaskForm, TaskFileForm
+from .models import Task, TaskFile
 
 
 # main-mega-main main site.
@@ -16,7 +20,7 @@ def index(request):
 
 
 # def test_json(request):
-#     from django.http import JsonResponse
+#     from django.http import JsonResponse, HttpResponse
 #     return JsonResponse({
 #         'test': [],
 #         'test2': {},
@@ -44,23 +48,44 @@ def tasks_index(request):
     })
 
 
-def tasks_task(request, task_id):
-
-    task = get_object_or_404(Task, pk=task_id)
+@require_task_ownership
+def tasks_task(request, task_id, task=None):
 
     if task.user == request.user:
         context = {
             'task': task,
+            'files': [1, 2, 3, 4, 5, 6, 7],
             'is_author': True
         }
     elif task.public:
         context = {
-            'task': task
+            'task': task,
+            'files': [1, 2, 3, 4, 5, 6, 7],
         }
     else:
         raise Http404("It's not your task mate :<")
 
     return render(request, "tasks/task.html", context=context)
+#
+# def tasks_task(request, task_id):
+#
+#     task = get_object_or_404(Task, pk=task_id)
+#
+#     if task.user == request.user:
+#         context = {
+#             'task': task,
+#             'files': [1, 2, 3, 4, 5, 6, 7],
+#             'is_author': True
+#         }
+#     elif task.public:
+#         context = {
+#             'task': task,
+#             'files': [1, 2, 3, 4, 5, 6, 7],
+#         }
+#     else:
+#         raise Http404("It's not your task mate :<")
+#
+#     return render(request, "tasks/task.html", context=context)
 
 
 @login_required
@@ -83,11 +108,6 @@ def tasks_map(request):
         'tasks': tasks,
         'tasks_json': json.dumps([ss(i) for i in tasks])
     })
-
-# @login_required
-# def tasks_map_json(request):
-#     pass
-#
 
 
 @login_required
@@ -168,3 +188,26 @@ def tasks_edit(request, task_id):
     else:
         raise Http404("Sorry, task doesn't exist")
 
+
+@login_required
+@require_POST
+@require_task_ownership
+def tasks_file_new(request, task_id, task=None):
+
+    form = TaskFileForm(request.POST or None, request.FILES)
+
+    if form.is_valid():
+
+        if len(request.FILES['taskfile'].name.split('.')) == 1:
+            raise ValidationError('File type is not supported')
+        newfile = TaskFile(
+            task=task,
+            file=request.FILES['taskfile'],
+            type=determine_file_type(request.FILES['taskfile'].content_type.split('/')[0]),
+            size=request.FILES['taskfile']._size,
+            name=form.data_cleaned['name']
+        )
+        newfile.save()
+        return redirect()
+    else:
+        pass

@@ -121,7 +121,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
-
+STATIC_ROOT = '/home/rikkt0r/PycharmProjects/my-organiser/static'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -134,3 +134,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MEDIA_ROOT = '/home/rikkt0r/PycharmProjects/my-organiser/media'
 MEDIA_URL = '/task/file/'
+
+TASK_UPLOAD_FILE_MAX_SIZE = '5242880'
+TASK_UPLOAD_FILE_IMAGE = ['png', 'jpg', 'jpeg', 'svg', 'tiff', 'bmp']
+TASK_UPLOAD_FILE_AUDIO = ['mp3', 'aac', 'ogg', 'wav', 'flac', 'alac']
+TASK_UPLOAD_FILE_VIDEO = ['mpg', 'mpeg', 'flv', '3gp', 'mp4', 'avi', 'mkv']
+TASK_UPLOAD_FILE_DOCUMENT = ['doc', 'docx', 'odt', 'txt', 'xls', 'xlsx', 'ppt', 'pptx', 'mail', 'cfg']

@@ -1,0 +1,13 @@
+{% load utils %}
+
+<div class="row cells2">
+    {% for subfiles in files|part2 %}
+        <div class="cell">
+            {% for file in subfiles %}
+                <ol class="numeric-list square-marker fg-dark dark-bullet" start="1">
+                    <li><a href="#" data-size="1024" data-type="pdf">Test file</a></li>
+                </ol>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>

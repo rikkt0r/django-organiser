@@ -1,7 +1,21 @@
+# -*- coding: utf-8 -*-
 from django.forms import forms, CharField, BooleanField, IntegerField, ChoiceField, \
-    RadioSelect, DateTimeField, DecimalField
+    RadioSelect, DateTimeField, DecimalField, FileField
 from django.forms.widgets import Textarea, Select, TextInput, DateTimeInput, \
     NumberInput, HiddenInput, CheckboxInput
+
+
+class TaskFileForm(forms.Form):
+    taskfile = FileField(
+        label='Select a file',
+        help_text='max. 4MB'
+    )
+    filename = CharField(
+        widget=TextInput(attrs={'placeholder': 'Enter file name'}),
+        label='File name',
+        max_length="80",
+        required=False
+    )
 
 
 # Yeah, i know modelForm might be suitable..

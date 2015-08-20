@@ -48,3 +48,15 @@ li span.enumeration {
 table#map-task-table td {
     cursor: pointer;
 }
+
+div.tasks ol li > a,
+div.tasks ol li > a:visited,
+div.tasks ol li > a:hover {
+    color: #222222 !important;
+    text-decoration: none;
+}
+
+/*[href$=".pdf"]*/
+.tasks a[data-size]:after { content: " (" attr(data-type) ", " attr(data-size) "MB)"; }
+
+a.promo {text-decoration: none;}

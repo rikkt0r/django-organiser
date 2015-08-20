@@ -51,17 +51,23 @@ class TaskFile(models.Model):
         (0, 'Unknown'),
         (1, 'Image'),
         (2, 'Audio'),
-        (3, 'Video')
+        (3, 'Video'),
+        (4, 'Document')
+    )
+
+    STATUSES = (
+        (False, 'Deleted'),
+        (True, 'Active')
     )
 
     # task_file_id = models.AutoField(primary_key=True)
     task = models.ForeignKey(Task)
-    file = models.FileField()
+    file = models.FileField(upload_to='taskfiles/%Y/%m')
     type = models.PositiveSmallIntegerField(default=0, choices=TYPES)
     size = models.IntegerField()
     name = models.CharField(max_length=60, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
-    status = models.BooleanField(default=True, blank=True)
+    status = models.BooleanField(default=True, choices=STATUSES)
 
     def __str__(self):
         return "File ID: " + str(self.id)

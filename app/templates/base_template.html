@@ -44,12 +44,8 @@
                     <a class="{% block menu_about %}{% endblock %}" href="/about/">About</a>
                 </li>
 
-                <li data-flexorderorigin="1" data-flexorder="2">
-                    <a class="{% block menu_support %}{% endblock %}" href="/about/support/">Support us!</a>
-                </li>
-
                 {% if user.is_authenticated %}
-                    <li data-flexorderorigin="2" data-flexorder="3">
+                    <li data-flexorderorigin="1" data-flexorder="2">
                         <a class="dropdown-toggle" href="#" class="{% block menu_tasks %}{% endblock %}">{{ user.username }}</a>
                         <ul data-no-close="true" data-role="dropdown" class="d-menu">
                           <li><a href="/tasks"><span class="chevron-thin-right"></span>Your tasks</a></li>
@@ -114,15 +110,15 @@
                 <div class="row cells2">
 
                     <div class="cell">
-                        <a href="#">Faq</a><br/>
-                        <a href="#">Rules</a><br/>
-                        <a href="#">some stuff</a><br/>
+                        <a href="/about/faq">Faq</a><br/>
+                        <a href="/about/agreement">Agreement</a><br/>
+                        <a href="/">Lost? Click for home.</a><br/>
                     </div>
 
                     <div class="cell">
                         <a href="https://bitbucket.com/rikkt0r">More projects</a><br />
-                        <a href="/about/techs">Technologies used</a><br />
-                        <a href="#">Its open sauce &raquo; check it</a><br />
+                        <a href="/about/">Technologies used</a><br />
+                        <a href="https://bitbucket.com/rikkt0r/my-organiser">Its open sauce &raquo; check it</a><br />
                     </div>
                 </div>
             </div>

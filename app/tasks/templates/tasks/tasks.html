@@ -17,7 +17,6 @@
                 <table class="dataTable bg-white fg-dark table striped hovered align-left" data-role="datatable" data-searching="true" data-ordering="true" data-paging="false" data-info="false">
                   <thead>
                     <tr>
-                      <!--<th>Countdown</th>-->
                       <th>From when</th>
                       <th>Until</th>
                       <th>What</th>
@@ -30,9 +29,6 @@
                   {# <th scope="row">1</th>#}
                   {% for task in tasks %}
                     <tr>
-                      <!--<td>-->
-                          <!--<div data-days="2" data-role="countdown" class="countdown"></div>-->
-                      <!--</td>-->
                       <td>{{ task.date_from|date:"Y-m-d" }}</td>
                       <td>{{ task.date_to|date:"Y-m-d h:m A" }}</td>
                       <td><a href="{% url 'tasks:task' task_id=task.id%}">{{task.name}}</a></td>
