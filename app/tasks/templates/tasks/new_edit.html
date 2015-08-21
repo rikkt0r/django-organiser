@@ -4,6 +4,22 @@
 
 {% block content %}
 
+    {% if edit_task %}
+    <div style="position: fixed; top: 100px;left:100px;border: 1px solid black;z-index: 50;background: white;">
+       <form action="{% url 'tasks:tasks_file_add' task_id=task_id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>{{ file_form.non_field_errors }}</p>
+            <p>{{ file_form.taskfile.label_tag }} {{ file_form.taskfile.help_text }}</p>
+            <p>
+                {{ file_form.taskfile.errors }}
+                {{ file_form.taskfile }}
+            </p>
+           <p>{{ file_form.filename }}</p>
+            <p><input class="button primary" type="submit" value="Upload"></p>
+        </form>
+    </div>
+    {%  endif  %}
+
     <div class="content-block">
         {% if edit_task %}
         <h1>Editing your task,</h1>

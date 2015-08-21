@@ -2,11 +2,12 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 # from django.views.decorators.cache import cache_page
 import json
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_http_methods
 
 from .services import determine_file_type, require_task_ownership
 from .forms import TaskForm, TaskFileForm
@@ -140,57 +141,56 @@ def tasks_new(request):
     })
 
 
+@require_http_methods(['GET', 'POST'])
 @login_required
-def tasks_edit(request, task_id):
+@require_task_ownership
+def tasks_edit(request, task_id, task=None):
 
-    if int(task_id) >= 1:
+    if request.method == 'POST':
 
-        task = get_object_or_404(Task, pk=task_id)
-        if task.user != request.user:
-            raise Http404("It's not your task mate :<")
+        form = TaskForm(request.POST or None)
 
-        if request.method == 'POST':
-
-            form = TaskForm(request.POST or None)
-            if form.is_valid():
-                for key, val in form.cleaned_data.items():
-                    setattr(task, key, val)
-                task.save()
-                return redirect('/tasks/')
-            else:
-                return render(request, "tasks/new_edit.html", context={
-                    'form': form,
-                    'edit_task': True
-                })
-
+        if form.is_valid():
+            for key, val in form.cleaned_data.items():
+                setattr(task, key, val)
+            task.save()
+            return redirect(reverse('tasks:task', kwargs={'task_id': task_id}))
         else:
-            task = get_object_or_404(Task, pk=task_id)
-
-            form = TaskForm(initial={
-                'date_from': task.date_from,
-                'date_to': task.date_to,
-                'description': task.description,
-                'lat': task.lat,
-                'lng': task.lng,
-                'name': task.name,
-                'place_desc': task.place_desc,
-                'priority': task.priority,
-                'public': task.public,
-                'repeat': task.repeat,
-                'repeat_days': task.repeat_days,
-                'status': task.status
-            })
-
             return render(request, "tasks/new_edit.html", context={
                 'form': form,
-                'edit_task': True
+                'file_form': TaskFileForm(),
+                'edit_task': True,
+                'task_id': task_id
             })
+
     else:
-        raise Http404("Sorry, task doesn't exist")
+        # task = get_object_or_404(Task, pk=task_id)
+
+        form = TaskForm(initial={
+            'date_from': task.date_from,
+            'date_to': task.date_to,
+            'description': task.description,
+            'lat': task.lat,
+            'lng': task.lng,
+            'name': task.name,
+            'place_desc': task.place_desc,
+            'priority': task.priority,
+            'public': task.public,
+            'repeat': task.repeat,
+            'repeat_days': task.repeat_days,
+            'status': task.status
+        })
+
+        return render(request, "tasks/new_edit.html", context={
+            'form': form,
+            'file_form': TaskFileForm(),
+            'edit_task': True,
+            'task_id': task_id
+        })
 
 
-@login_required
 @require_POST
+@login_required
 @require_task_ownership
 def tasks_file_new(request, task_id, task=None):
 
@@ -205,9 +205,7 @@ def tasks_file_new(request, task_id, task=None):
             file=request.FILES['taskfile'],
             type=determine_file_type(request.FILES['taskfile'].content_type.split('/')[0]),
             size=request.FILES['taskfile']._size,
-            name=form.data_cleaned['name']
+            name=form.cleaned_data['filename']
         )
         newfile.save()
-        return redirect()
-    else:
-        pass
+    return redirect(reverse('tasks:tasks_edit', kwargs={'task_id': task_id}))

@@ -6,5 +6,6 @@ urlpatterns = [
     url(r'^map/$', views.tasks_map, name='tasks_map'),
     url(r'^new/$', views.tasks_new, name='tasks_new'),
     url(r'^(?P<task_id>[0-9]+)/$', views.tasks_task, name='task'),
-    url(r'^(?P<task_id>[0-9]+)/edit/$', views.tasks_edit, name='tasks_edit')
+    url(r'^(?P<task_id>[0-9]+)/edit/$', views.tasks_edit, name='tasks_edit'),
+    url(r'^(?P<task_id>[0-9]+)/file/add$', views.tasks_file_new, name='tasks_file_add'),
 ]
