@@ -1,20 +1,9 @@
-# My Little Organiser
+# My 100% typical and standard CRUD app
 
+Well.. my first django project, 2014/2015, left as-is,
+everyone creates task magagement app, right?
 
-### By Grzegorz Wójcicki
-
-
-
-Test: [Click me](http://pwnag3.net:5000)
-
-
-Domains:
-
-* my-organiser.com
-* little-organiser.com
-* my-little-organiser.com
-
-## WTF
+## What gives
 
 * Simple system for managing daily tasks (bonus: map view).
 * Django, Leaflet, DataTables, MetroUI.
