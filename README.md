@@ -12,8 +12,8 @@ everyone creates task magagement app, right?
 
 
 # Screenshots
-![Screenshot 1](screenshot1.png)
-![Screenshot 2](screenshot2.png)
+![Screenshot 1](screen1.png)
+![Screenshot 2](screen2.png)
 
 
 ## Url structure
