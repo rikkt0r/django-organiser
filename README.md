@@ -9,7 +9,12 @@ everyone creates task magagement app, right?
 * Django, Leaflet, DataTables, MetroUI.
 * No user tracking.
 * Ajax avoided like fire. No real reason. Just wanted it to work this way.
-* Next project will be SPA@REST
+
+
+# Screenshots
+![Screenshot 1](screenshot1.png)
+![Screenshot 2](screenshot2.png)
+
 
 ## Url structure
 
